@@ -6,8 +6,7 @@
 		items: Snippet;
 	}>();
 
-	// let opened = $state(false);
-	let opened = $state(true);
+	let opened = $state(false);
 </script>
 
 <button

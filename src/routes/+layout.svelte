@@ -4,6 +4,7 @@
 	import Notifications from "$lib/views/Notifications.svelte";
 	import { page } from "$app/state";
 	import "../app.scss";
+	import Footer from "$lib/views/Footer.svelte";
 
 	const { children } = $props();
 	const page_id = $derived(page.route.id);
@@ -24,3 +25,5 @@
 <Notifications />
 
 <GithubCorner url="https://github.com/loremdipso/recipease" />
+
+<Footer />
