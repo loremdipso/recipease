@@ -15,6 +15,9 @@ const config = {
 			pages: "docs",
 			fallback: "404.html", // may differ from host to host
 		}),
+		paths: {
+			base: process.argv.includes("dev") ? "" : process.env.BASE_PATH,
+		},
 	},
 };
 
