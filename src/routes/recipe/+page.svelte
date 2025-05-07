@@ -17,6 +17,7 @@
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 
 	let url = $state(get_query_url());
+	console.log({ url });
 
 	const data = writable<IRecipe | null>(null);
 	let current_units = $state(UNITS.ORIGINAL);
@@ -90,38 +91,48 @@
 
 <Toolbar back_path="/my-recipes" title={final_data?.title}>
 	{#snippet extra_buttons()}
-		{#if navigator.share || true}
+		{#if final_data}
 			<button
-				id="share-button"
+				class="warning"
 				onclick={async () => {
-					const url_obj = new URL(window.location.href);
-					url_obj.search = "";
-					if (url) {
-						url_obj.searchParams.delete("my-recipes");
-						url_obj.searchParams.set("url", url);
-					}
-					await navigator.share({
-						title: "Here's a recipe for ya!",
-						url: url_obj.toString(),
-					});
+					// TODO
 				}}
 			>
-				Share
+				Delete
+			</button>
+
+			{#if navigator.share}
+				<button
+					id="share-button"
+					onclick={async () => {
+						const url_obj = new URL(window.location.href);
+						url_obj.search = "";
+						if (url) {
+							url_obj.searchParams.delete("my-recipes");
+							url_obj.searchParams.set("url", url);
+						}
+						await navigator.share({
+							title: "Here's a recipe for ya!",
+							url: url_obj.toString(),
+						});
+					}}
+				>
+					Share
+				</button>
+			{/if}
+
+			<button
+				onclick={async () => {
+					if (final_data) {
+						let markdown = data_to_markdown_string(final_data);
+						await navigator.clipboard.writeText(markdown);
+						notify("Copied markdown to clipboard :)");
+					}
+				}}
+			>
+				Get markdown
 			</button>
 		{/if}
-
-		<button
-			disabled={!final_data}
-			onclick={async () => {
-				if (final_data) {
-					let markdown = data_to_markdown_string(final_data);
-					await navigator.clipboard.writeText(markdown);
-					notify("Copied markdown to clipboard :)");
-				}
-			}}
-		>
-			Get markdown
-		</button>
 
 		<a
 			href={url}

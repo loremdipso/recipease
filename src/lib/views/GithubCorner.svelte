@@ -7,13 +7,13 @@
 	href={url}
 	aria-label="View source on GitHub"
 	target="_blank"
-	style="position: fixed; right: 0; bottom: -0.5rem; z-index: 1000"
+	style="position: fixed; bottom: 0; z-index: 1000"
 >
 	<svg
 		width="40"
 		height="40"
 		viewBox="0 0 250 250"
-		style="fill: #151513; color: #fff; border: 0; transform: scale(1, -1)"
+		style="fill: #151513; color: #fff; border: 0; transform: scale(-1, -1)"
 		aria-hidden="true"
 	>
 		<path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>

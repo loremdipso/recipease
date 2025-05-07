@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { get_all_recipes, delete_recipe } from "$lib/data";
-	import { get_url, get_url_from_clipboard, goto } from "$lib/utils";
+	import { get_url } from "$lib/utils";
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 
@@ -22,7 +22,7 @@
 			class:selected={recipe.url && recipe.url === current_url}
 		>
 			<a
-				class="grow vertically-centered"
+				class="grow vertically-centered p0_5"
 				href={get_url(`/recipe`, { url: recipe.url })}
 			>
 				{recipe.title || "<missing title>"}
@@ -50,9 +50,11 @@
 		display: flex;
 		gap: 5px;
 		align-items: stretch;
+		background-color: #1a1a1a;
+	}
+
+	.recipe-row:nth-child(even) {
 		background: black;
-		padding: 0.5rem;
-		margin: 0.1rem;
 	}
 
 	.recipe-row.selected {

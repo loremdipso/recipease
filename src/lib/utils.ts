@@ -146,7 +146,7 @@ export async function get_url_from_clipboard(): Promise<string | undefined> {
 }
 
 export async function goto(url: string, query_params?: {}) {
-	await native_goto(get_url(url));
+	await native_goto(get_url(url, query_params));
 }
 
 export function get_url(
