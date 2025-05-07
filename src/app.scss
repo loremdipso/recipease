@@ -230,29 +230,11 @@ button:disabled {
 	background-color: black;
 }
 
-.focus-pane {
+.focus-pane header {
+	position: sticky;
+	z-index: 100;
+	top: 0;
 	background-color: black;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	position: relative;
-	flex-basis: 0;
-	overflow: hidden;
-
-	.focus-pane-content {
-		border: 5px solid white;
-		box-sizing: border-box;
-		overflow-y: scroll;
-		width: 100%;
-		padding: 0 0.3rem;
-	}
-
-	header {
-		position: sticky;
-		z-index: 100;
-		top: 0;
-		background-color: black;
-	}
 }
 
 .resize-handle {

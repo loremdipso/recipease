@@ -5,7 +5,13 @@
 	import { UNITS } from "$lib/constants";
 	import { data_to_markdown_string } from "$lib/renderers";
 	import { equals, get_query_url, goto } from "$lib/utils";
-	import { fix_data, get_meta_sections, try_load_url } from "$lib/data";
+	import {
+		delete_recipe,
+		fix_data,
+		get_all_recipes,
+		get_meta_sections,
+		try_load_url,
+	} from "$lib/data";
 	import { get_preference, save_preference } from "$lib/preferences";
 	import { notify } from "$lib/globals.svelte";
 	import { onMount } from "svelte";
@@ -15,8 +21,14 @@
 	import Toolbar from "$lib/views/Toolbar.svelte";
 	import Help from "$lib/views/Help.svelte";
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
+	import Popup from "$lib/views/Popup.svelte";
+	import { afterNavigate } from "$app/navigation";
 
-	let url = $state(get_query_url());
+	let url = $state<string | null>(null);
+
+	afterNavigate(() => {
+		url = get_query_url();
+	});
 
 	const data = writable<IRecipe | null>(null);
 	let current_units = $state(UNITS.ORIGINAL);
@@ -27,6 +39,7 @@
 	let selectedKeyword = $state<string | null>(null);
 	let checkedItems = $state<{ [key: string]: boolean }>({});
 	let section_to_focus = $state<ISection | null>(null);
+	let recipe_to_delete = $state<string | null>(null);
 
 	let meta_sections = $derived(
 		get_meta_sections(
@@ -93,8 +106,9 @@
 		{#if final_data}
 			<button
 				class="warning"
-				onclick={async () => {
-					// TODO
+				onclick={async (event) => {
+					event.stopPropagation();
+					recipe_to_delete = url;
 				}}
 			>
 				Delete
@@ -269,6 +283,22 @@
 	</div>
 
 	<AddRecipeFloater />
+
+	{#if recipe_to_delete}
+		<Popup
+			text="Are you sure?"
+			accept={() => {
+				if (recipe_to_delete) {
+					delete_recipe(get_all_recipes(), recipe_to_delete);
+					recipe_to_delete = null;
+					goto("/my-recipes", { is_going_back: true });
+				}
+			}}
+			cancel={() => {
+				recipe_to_delete = null;
+			}}
+		/>
+	{/if}
 </main>
 
 {#if section_to_focus}

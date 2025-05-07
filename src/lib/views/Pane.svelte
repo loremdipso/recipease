@@ -37,8 +37,6 @@
 	$effect(() => {});
 </script>
 
-{#snippet focused_button()}{/snippet}
-
 <div class="focus-pane" style:min-height={min_height} bind:this={element}>
 	<div class="focus-pane-content">
 		{@render content()}
@@ -59,3 +57,23 @@
 		></div>
 	{/if}
 </div>
+
+<style lang="scss">
+	.focus-pane {
+		background-color: black;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		position: relative;
+		flex-basis: 0;
+		border: 5px solid white;
+		overflow: hidden;
+
+		.focus-pane-content {
+			box-sizing: border-box;
+			overflow-y: scroll;
+			width: 100%;
+			padding: 0 0.3rem;
+		}
+	}
+</style>
