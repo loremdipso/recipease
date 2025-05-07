@@ -1,1 +1,0 @@
-import{t,a as e}from"../chunks/C5dGu9yi.js";import"../chunks/CKsb00u_.js";import{f as i,n as m}from"../chunks/BSUmbuiv.js";import{T as p}from"../chunks/NDp2QBy9.js";var n=t('<!> <main><div class="card"><p>TODO</p></div></main>',1);function v(r){var a=n(),o=i(a);p(o,{title:"Terms of Service",back_path:"/"}),m(2),e(r,a)}export{v as component};

@@ -95,7 +95,6 @@ export async function try_load_url(
 	if (!force_refresh) {
 		let data = find_recipe_by_url(url);
 		if (data) {
-			notify("Done!", "success");
 			return data;
 		}
 	}
