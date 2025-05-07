@@ -17,7 +17,6 @@
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 
 	let url = $state(get_query_url());
-	console.log({ url });
 
 	const data = writable<IRecipe | null>(null);
 	let current_units = $state(UNITS.ORIGINAL);

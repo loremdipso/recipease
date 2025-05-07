@@ -391,3 +391,13 @@ h2 {
 .warning {
 	color: #ff7e7e;
 }
+
+.transition-container {
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	position: fixed;
+	top: 0;
+	height: 100%;
+	width: 100%;
+}

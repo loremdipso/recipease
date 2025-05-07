@@ -16,7 +16,7 @@
 			{#if back_path}
 				<button
 					class="shrink p0_5"
-					onclick={() => goto(back_path)}
+					onclick={() => goto(back_path, { is_going_back: true })}
 					aria-label="Go back"
 				>
 					<svg

@@ -145,8 +145,16 @@ export async function get_url_from_clipboard(): Promise<string | undefined> {
 	notify("Didn't find a recipe url in your clipboard. Sorry bud :/");
 }
 
-export async function goto(url: string, query_params?: {}) {
-	await native_goto(get_url(url, query_params));
+export async function goto(
+	url: string,
+	extras?: {
+		is_going_back?: boolean;
+		query_params?: { [key: string]: string };
+	}
+) {
+	await native_goto(get_url(url, extras?.query_params), {
+		state: { is_going_back: extras?.is_going_back },
+	});
 }
 
 export function get_url(
