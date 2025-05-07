@@ -1,9 +1,17 @@
+<script>
+	import { get_url } from "$lib/utils";
+</script>
+
 <div class="footer">
-	<a href="#"> Privacy policy </a>
-	<a href="#"> Terms and conditions</a>
+	<a href={get_url("/privacy-policy")}> Privacy Policy </a>
+	<a href={get_url("/terms")}>Terms of Service</a>
 </div>
 
 <style lang="scss">
+	a {
+		color: white;
+	}
+
 	.footer {
 		position: fixed;
 		font-size: 10px;
