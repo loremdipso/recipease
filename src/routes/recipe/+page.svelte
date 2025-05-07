@@ -173,8 +173,8 @@
 <main>
 	<div class="pb5 flex-col gap2">
 		{#if final_data}
-			<div class="flex-row bottom mb1 mt1">
-				<div class="flex-col gap1">
+			<div class="flex-col gap1 mb1 mt1">
+				<div class="flex-row gap1 flex-end wrap">
 					<SlideCheck
 						text="Enable colors"
 						checked={show_colors}
@@ -192,6 +192,34 @@
 							}}
 						/>
 					{/if}
+				</div>
+
+				<div class="flex-row gap1 mb1 mt1 wrap">
+					<div class="flex-row gap1">
+						<div class="flex-row">
+							<button
+								class="rounded-button black"
+								onclick={() => set_quantity(0.5)}
+								class:selected={equals(current_quantity, 0.5)}
+							>
+								0.5x
+							</button>
+							<button
+								class="rounded-button black"
+								onclick={() => set_quantity(1.0)}
+								class:selected={equals(current_quantity, 1.0)}
+							>
+								1x
+							</button>
+							<button
+								class="rounded-button black"
+								onclick={() => set_quantity(2.0)}
+								class:selected={equals(current_quantity, 2.0)}
+							>
+								2x
+							</button>
+						</div>
+					</div>
 
 					<div class="flex-row">
 						<button
@@ -214,32 +242,6 @@
 							class:selected={current_units == UNITS.METRIC}
 						>
 							Metric
-						</button>
-					</div>
-				</div>
-
-				<div class="flex-col gap1">
-					<div class="flex-row">
-						<button
-							class="rounded-button black"
-							onclick={() => set_quantity(0.5)}
-							class:selected={equals(current_quantity, 0.5)}
-						>
-							0.5x
-						</button>
-						<button
-							class="rounded-button black"
-							onclick={() => set_quantity(1.0)}
-							class:selected={equals(current_quantity, 1.0)}
-						>
-							1x
-						</button>
-						<button
-							class="rounded-button black"
-							onclick={() => set_quantity(2.0)}
-							class:selected={equals(current_quantity, 2.0)}
-						>
-							2x
 						</button>
 					</div>
 				</div>
