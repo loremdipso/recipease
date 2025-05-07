@@ -1,15 +1,20 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
+	import { fade } from "svelte/transition";
 
 	let { click, transparent, content } = $props<{
 		click: () => void;
 		transparent?: boolean;
 		content?: Snippet;
 	}>();
+
+	const duration = 200;
 </script>
 
 <div
 	class="overlay"
+	in:fade={{ duration }}
+	out:fade={{ duration }}
 	class:transparent
 	onclick={(event) => {
 		event.stopPropagation();

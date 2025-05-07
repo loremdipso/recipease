@@ -4,6 +4,7 @@
 </script>
 
 <a
+	class="no-print"
 	href={url}
 	aria-label="View source on GitHub"
 	target="_blank"

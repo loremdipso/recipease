@@ -1,12 +1,14 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 	import Overlay from "./Overlay.svelte";
+	import { fade } from "svelte/transition";
 
 	let { items } = $props<{
 		items: Snippet;
 	}>();
 
 	let opened = $state(false);
+	const duration = 200;
 </script>
 
 <button
@@ -36,6 +38,8 @@
 
 	{#if opened}
 		<div
+			in:fade={{ duration }}
+			out:fade={{ duration }}
 			class="dropdown-menu"
 			onclick={(event) => {
 				event.stopPropagation();

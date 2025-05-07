@@ -86,14 +86,12 @@
 		section_to_focus = null;
 	}
 
-	const initial_keep_screen_awake_value = $state(
-		get_preference("keep_screen_awake")
-	);
+	let should_keep_screen_awake = $state(get_preference("keep_screen_awake"));
 
 	// Set wake lock to true by default
 	onMount(() => {
 		(async () => {
-			await set_wake_lock(initial_keep_screen_awake_value, false);
+			await set_wake_lock(should_keep_screen_awake, false);
 		})();
 
 		return async () => {
@@ -133,7 +131,8 @@
 					notify("No url!", "error");
 				}
 			}}
-			aria-label="Reload"
+			title="Reload this recipe"
+			aria-label="Reload this recipe"
 		>
 			<svg
 				fill="#000000"
@@ -160,68 +159,83 @@
 			>
 		</button>
 
-		<HamburgerMenu>
-			{#snippet items()}
-				<div class="flex-col gap1">
-					<a
-						href={url}
-						target="_blank"
-						class:disabled={!Boolean(url)}
-					>
-						Open the original
-					</a>
+		{#if final_data}
+			<HamburgerMenu>
+				{#snippet items()}
+					<div class="flex-col gap1">
+						<a
+							href={url}
+							target="_blank"
+							class:disabled={!Boolean(url)}
+						>
+							Open the original
+						</a>
 
-					<hr />
-
-					<button
-						onclick={async () => {
-							if (final_data) {
-								let markdown =
-									data_to_markdown_string(final_data);
-								await navigator.clipboard.writeText(markdown);
-								notify("Copied markdown to clipboard :)");
-							}
-						}}
-					>
-						Get markdown
-					</button>
-
-					<hr />
-
-					<SlideCheck
-						text="Enable colors"
-						checked={show_colors}
-						onchange={(checked) => {
-							show_colors = checked;
-							save_preference({ show_colors: checked });
-						}}
-					/>
-					{#if navigator.wakeLock}
 						<hr />
-						<SlideCheck
-							text="Keep screen on"
-							checked={initial_keep_screen_awake_value}
-							onchange={(checked) => {
-								set_wake_lock(checked);
-							}}
-						/>
-					{/if}
 
-					{#if final_data}
-						<hr />
 						<button
-							class="warning"
-							onclick={async (event) => {
-								event.stopPropagation();
-								recipe_to_delete = url;
+							onclick={async () => {
+								if (final_data) {
+									let markdown =
+										data_to_markdown_string(final_data);
+									await navigator.clipboard.writeText(
+										markdown
+									);
+									notify("Copied markdown to clipboard :)");
+								}
 							}}
 						>
-							Delete recipe
+							Get markdown
 						</button>
-					{/if}
-				</div>
-			{/snippet}
-		</HamburgerMenu>
+
+						<hr />
+
+						<button
+							onclick={async () => {
+								window.print();
+							}}
+						>
+							Print
+						</button>
+
+						<hr />
+
+						<SlideCheck
+							text="Enable colors"
+							checked={show_colors}
+							onchange={(checked) => {
+								show_colors = checked;
+								save_preference({ show_colors: checked });
+							}}
+						/>
+						{#if navigator.wakeLock}
+							<hr />
+							<SlideCheck
+								text="Keep screen on"
+								checked={should_keep_screen_awake}
+								onchange={(checked) => {
+									should_keep_screen_awake = checked;
+									set_wake_lock(checked);
+								}}
+							/>
+						{/if}
+
+						{#if final_data}
+							<hr />
+							<button
+								class="warning"
+								onclick={async (event) => {
+									event.stopPropagation();
+									recipe_to_delete = url;
+								}}
+							>
+								Delete recipe
+							</button>
+						{/if}
+					</div>
+				{/snippet}
+			</HamburgerMenu>
+		{/if}
 	{/snippet}
 </Toolbar>
 

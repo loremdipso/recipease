@@ -63,7 +63,7 @@
 		{/if}
 
 		<button
-			class="shrink"
+			class="shrink no-print"
 			tabindex="0"
 			onclick={() => onFocusSection(section)}
 		>

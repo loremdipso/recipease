@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { fly } from "svelte/transition";
-	import GithubCorner from "$lib/views/GithubCorner.svelte";
 	import Notifications from "$lib/views/Notifications.svelte";
 	import { page } from "$app/state";
 	import "../app.scss";
@@ -23,7 +22,5 @@
 {/key}
 
 <Notifications />
-
-<GithubCorner url="https://github.com/loremdipso/recipease" />
 
 <Footer />

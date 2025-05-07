@@ -27,6 +27,7 @@
 				<button
 					class="shrink white-text flex-row vertically-centered p0 gap0_5 mw0"
 					onclick={() => goto(back_path, { is_going_back: true })}
+					title="Go back"
 					aria-label="Go back"
 				>
 					<svg
@@ -64,7 +65,7 @@
 
 	{#if extra_buttons}
 		<div
-			class="flex-row grow shrink-children flex-end gap1 wrap extra-buttons pr1"
+			class="flex-row grow shrink-children flex-end gap1 wrap extra-buttons pr1 no-print"
 		>
 			{@render extra_buttons()}
 		</div>

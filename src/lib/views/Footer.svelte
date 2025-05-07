@@ -2,7 +2,7 @@
 	import { get_url } from "$lib/utils";
 </script>
 
-<div class="footer">
+<div class="footer no-print">
 	<a href={get_url("/privacy-policy")}> Privacy Policy </a>
 	<a href={get_url("/terms")}>Terms of Service</a>
 </div>
