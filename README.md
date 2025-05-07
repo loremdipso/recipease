@@ -2,7 +2,7 @@
 
 Simple [PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) that you can install on phone or desktop. Attempts to grab only the essential portions of a recipe for your convenience. Supports exporting to Markdown. This doesn't need an account and doesn't store any information about you.
 
-See it live at <https://loremdipso.com/recipe-scraper>
+See it live at <https://loremdipso.com/recipease>
 
 ## Installation
 

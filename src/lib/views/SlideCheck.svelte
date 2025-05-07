@@ -6,7 +6,7 @@
 	}>();
 </script>
 
-<label>
+<label class="selectable">
 	<input
 		type="checkbox"
 		{checked}

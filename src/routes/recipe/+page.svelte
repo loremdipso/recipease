@@ -186,24 +186,15 @@
 
 		<HamburgerMenu>
 			{#snippet items()}
-				<a
-					href={url}
-					class="button-like"
-					target="_blank"
-					class:disabled={!Boolean(url)}
-				>
-					Open the original
-				</a>
-			{/snippet}
-		</HamburgerMenu>
-	{/snippet}
-</Toolbar>
-
-<main>
-	<div class="pb5 flex-col gap2">
-		{#if final_data}
-			<div class="flex-col gap1 mb1 mt1">
-				<div class="flex-row gap1 flex-end wrap">
+				<div class="flex-col gap1">
+					<a
+						href={url}
+						target="_blank"
+						class:disabled={!Boolean(url)}
+					>
+						Open the original
+					</a>
+					<hr />
 					<SlideCheck
 						text="Enable colors"
 						checked={show_colors}
@@ -213,6 +204,7 @@
 						}}
 					/>
 					{#if navigator.wakeLock}
+						<hr />
 						<SlideCheck
 							text="Keep screen on"
 							checked={initial_keep_screen_awake_value}
@@ -222,7 +214,15 @@
 						/>
 					{/if}
 				</div>
+			{/snippet}
+		</HamburgerMenu>
+	{/snippet}
+</Toolbar>
 
+<main>
+	<div class="pb5 flex-col gap2">
+		{#if final_data}
+			<div class="flex-col gap1 mb1 mt1">
 				<div class="flex-row gap1 mb1 mt1 wrap">
 					<div class="flex-row gap1">
 						<div class="flex-row">

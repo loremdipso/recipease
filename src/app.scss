@@ -42,10 +42,6 @@ a {
 	color: #007acc;
 }
 
-button a {
-	color: white;
-}
-
 .button-like {
 	display: flex;
 	flex-direction: column;
@@ -382,4 +378,12 @@ h2 {
 	top: 0;
 	height: 100%;
 	width: 100%;
+}
+
+hr {
+	color: white;
+}
+
+.selectable:hover {
+	cursor: pointer;
 }

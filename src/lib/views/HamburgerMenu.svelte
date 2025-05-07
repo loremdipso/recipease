@@ -1,11 +1,13 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
+	import Overlay from "./Overlay.svelte";
 
 	let { items } = $props<{
 		items: Snippet;
 	}>();
 
-	let opened = $state(false);
+	// let opened = $state(false);
+	let opened = $state(true);
 </script>
 
 <button
@@ -32,10 +34,42 @@
 			></path>
 		</g>
 	</svg>
+
+	{#if opened}
+		<div
+			class="dropdown-menu"
+			onclick={(event) => {
+				event.stopPropagation();
+			}}
+			onkeypress={() => {}}
+			tabindex="0"
+			role="button"
+		>
+			{@render items()}
+		</div>
+	{/if}
 </button>
 
 {#if opened}
-	<div class="">
-		{@render items()}
-	</div>
+	<Overlay
+		transparent={true}
+		click={() => {
+			opened = false;
+		}}
+	/>
 {/if}
+
+<style lang="scss">
+	.dropdown-menu {
+		background: #282e33;
+		position: fixed;
+		z-index: 10001;
+		padding: 0.5rem;
+		border-radius: 10px;
+		right: 20px;
+
+		// TODO: add a pointy radius here
+		// border-top-right-radius: 0;
+		// transform: translateY(10px);
+	}
+</style>

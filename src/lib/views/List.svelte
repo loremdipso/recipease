@@ -72,7 +72,7 @@
 	</header>
 
 	{#each section.rows as row}
-		<label class:selected={is_row_selected(row)}>
+		<label class="selectable" class:selected={is_row_selected(row)}>
 			<input
 				type="checkbox"
 				checked={checkedItems[row.id]}

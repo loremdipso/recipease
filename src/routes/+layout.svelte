@@ -23,4 +23,4 @@
 
 <Notifications />
 
-<GithubCorner url="https://github.com/loremdipso/recipe-scraper" />
+<GithubCorner url="https://github.com/loremdipso/recipease" />
