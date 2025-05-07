@@ -1,5 +1,7 @@
 import { notify } from "./globals.svelte";
 import type { Keywords } from "./types";
+import { goto as native_goto } from "$app/navigation";
+import { base } from "$app/paths";
 
 export function remove_markdown(text: string): string {
 	return text.replaceAll("**", "");
@@ -140,6 +142,27 @@ export async function get_url_from_clipboard(): Promise<string | undefined> {
 		}
 	}
 
-	notify("Didn't find a recipe url in your clipboard");
-	notify("Sorry bud :/");
+	notify("Didn't find a recipe url in your clipboard. Sorry bud :/");
+}
+
+export async function goto(url: string, query_params?: {}) {
+	await native_goto(get_url(url));
+}
+
+export function get_url(
+	relative_url: string,
+	query_params?: { [key: string]: string }
+) {
+	if (!relative_url.startsWith("/")) {
+		relative_url = `/${relative_url}`;
+	}
+	let url = `${base}${relative_url}`;
+	if (query_params) {
+		let params = new URLSearchParams();
+		for (let key of Object.keys(query_params)) {
+			params.append(key, query_params[key]);
+		}
+		url += `?${params.toString()}`;
+	}
+	return url;
 }

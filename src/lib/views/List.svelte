@@ -52,10 +52,8 @@
 	});
 </script>
 
-{#snippet focused_button()}{/snippet}
-
 <div class="list" bind:this={element}>
-	<div style:display="flex" style:gap="0.5rem">
+	<header class="flex-row vertically-centered gap1 mb0_5">
 		{#if section.level === 2}
 			<h2>{section.text}</h2>
 		{:else if section.level === 3}
@@ -64,12 +62,14 @@
 			<h4>{section.text}</h4>
 		{/if}
 
-		<div class="center" style:display="flex">
-			<button tabindex="0" onclick={() => onFocusSection(section)}>
-				{#if isFocused}close{:else}focus{/if}
-			</button>
-		</div>
-	</div>
+		<button
+			class="shrink"
+			tabindex="0"
+			onclick={() => onFocusSection(section)}
+		>
+			{#if isFocused}close{:else}focus{/if}
+		</button>
+	</header>
 
 	{#each section.rows as row}
 		<label class:selected={is_row_selected(row)}>

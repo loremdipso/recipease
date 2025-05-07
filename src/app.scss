@@ -1,5 +1,6 @@
 @use "tailwindcss";
-@plugin '@tailwindcss/typography';
+// TODO: do I need this?
+// @plugin '@tailwindcss/typography';
 
 /* Generic */
 html {
@@ -26,6 +27,7 @@ body {
 
 main {
 	overflow-y: scroll;
+	margin-top: 1rem;
 }
 
 main > :not(.full-width) {
@@ -33,6 +35,7 @@ main > :not(.full-width) {
 	margin-right: 0.5rem;
 }
 
+button,
 a {
 	text-decoration: none;
 	font-weight: bold;
@@ -43,14 +46,20 @@ button a {
 	color: white;
 }
 
+.button-like {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
 .button-like,
 button {
 	border-width: 0;
 	flex-grow: 1;
 	font-weight: bold;
-	color: white;
+	// color: white;
 	padding: 0.5rem;
-	background: grey;
+	// background: grey;
 }
 
 a:hover,
@@ -59,7 +68,6 @@ button:hover {
 	cursor: pointer;
 }
 
-.button-like,
 button:disabled {
 	font-weight: normal;
 }
@@ -67,6 +75,18 @@ button:disabled {
 .flex-row {
 	display: flex;
 	justify-content: space-between;
+}
+
+.flex-start {
+	justify-content: start;
+}
+
+.flex-end {
+	justify-content: end;
+}
+
+.shrink-children > * {
+	flex-grow: 0;
 }
 
 .flex-col {
@@ -81,7 +101,6 @@ button:disabled {
 
 .button-like {
 	text-align: center;
-	font-size: 13px;
 	font-family: sans-serif;
 }
 
@@ -89,16 +108,24 @@ button:disabled {
 	display: none;
 }
 
-.black {
-	background: black;
+.p0 {
+	padding: 0;
 }
 
-.green {
-	background: #338356;
+.p0_5 {
+	padding: 0.5rem;
+}
+
+.p1 {
+	padding: 1rem;
 }
 
 .m1 {
 	margin: 1rem;
+}
+
+.pr1 {
+	padding-right: 1rem;
 }
 
 .mr1 {
@@ -109,23 +136,41 @@ button:disabled {
 	margin-bottom: 1rem;
 }
 
+.mb0_5 {
+	margin-bottom: 0.5rem;
+}
+
 .mt1 {
 	margin-top: 1rem;
 }
 
+.black {
+	color: white;
+	background: black;
+}
+
+.green {
+	color: white;
+	background: #338356;
+}
+
 .blue {
+	color: white;
 	background: #007acc;
 }
 
 .purple {
+	color: white;
 	background: #d51ced;
 }
 
 .pink {
+	color: white;
 	background: #fa8072;
 }
 
 .red {
+	color: white;
 	background: red;
 }
 
@@ -161,8 +206,7 @@ button:disabled {
 
 /* Specific */
 
-.output {
-	color: white;
+.pb5 {
 	padding-bottom: 5rem;
 }
 
@@ -194,14 +238,21 @@ button:disabled {
 	position: relative;
 	flex-basis: 0;
 	overflow: hidden;
-}
 
-.focus-pane-content {
-	border: 5px solid white;
-	box-sizing: border-box;
-	overflow-y: scroll;
-	width: 100%;
-	padding: 0 0.3rem;
+	.focus-pane-content {
+		border: 5px solid white;
+		box-sizing: border-box;
+		overflow-y: scroll;
+		width: 100%;
+		padding: 0 0.3rem;
+	}
+
+	header {
+		position: sticky;
+		z-index: 100;
+		top: 0;
+		background-color: black;
+	}
 }
 
 .resize-handle {
@@ -287,4 +338,52 @@ label.selected {
 .fade-out {
 	transition: opacity 3s ease-in-out;
 	opacity: 0.2;
+}
+
+.wrap {
+	flex-wrap: wrap;
+}
+
+.vertically-centered {
+	display: flex;
+	align-items: center;
+}
+
+// TODO: what should these values be?
+h1 {
+	font-size: 18px;
+	line-height: 32px;
+	font-weight: bold;
+	line-height: 32px;
+}
+
+h2 {
+	font-size: 18px;
+	line-height: 32px;
+	font-weight: bold;
+	line-height: 32px;
+}
+
+.gap0_5 {
+	gap: 0.5rem;
+}
+
+.rgap0_5 {
+	row-gap: 0.5rem;
+}
+
+.gap1 {
+	gap: 1rem;
+}
+
+.gap2 {
+	gap: 1rem;
+}
+
+.mw0 {
+	min-width: 0;
+}
+
+.mla {
+	margin-left: auto;
 }

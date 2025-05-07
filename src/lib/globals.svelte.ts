@@ -28,3 +28,9 @@ export function remove_notification(notification: INotification) {
 		return new_notifications;
 	});
 }
+
+export const installPrompt = writable<any>(null);
+window.addEventListener("beforeinstallprompt", (event) => {
+	event.preventDefault();
+	installPrompt.set(event);
+});

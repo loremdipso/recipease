@@ -1,11 +1,10 @@
 <script lang="ts">
-	import Help from "$lib/views/Help.svelte";
 	import List from "$lib/views/List.svelte";
 	import Pane from "$lib/views/Pane.svelte";
 	import SlideCheck from "$lib/views/SlideCheck.svelte";
 	import { UNITS } from "$lib/constants";
 	import { data_to_markdown_string } from "$lib/renderers";
-	import { equals, get_query_url } from "$lib/utils";
+	import { equals, get_query_url, goto } from "$lib/utils";
 	import { fix_data, get_meta_sections, try_load_url } from "$lib/data";
 	import { get_preference, save_preference } from "$lib/preferences";
 	import { notify } from "$lib/globals.svelte";
@@ -13,8 +12,9 @@
 	import { set_wake_lock } from "$lib/wake_lock";
 	import { type IRecipe, type ISection } from "$lib/types";
 	import { writable } from "svelte/store";
-	import { goto } from "$app/navigation";
 	import Toolbar from "$lib/views/Toolbar.svelte";
+	import Help from "$lib/views/Help.svelte";
+	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 
 	let url = $state(get_query_url());
 
@@ -72,12 +72,6 @@
 		section_to_focus = null;
 	}
 
-	let installPrompt = $state<any>(null);
-	window.addEventListener("beforeinstallprompt", (event) => {
-		event.preventDefault();
-		installPrompt = event;
-	});
-
 	const initial_keep_screen_awake_value = $state(
 		get_preference("keep_screen_awake")
 	);
@@ -94,76 +88,91 @@
 	});
 </script>
 
-<Toolbar show_back_button>
-	<button class="pink" onclick={() => goto("/my-recipes")}>
-		My recipes
-	</button>
-	<!-- <button
-			class="green"
-			onclick={async () => {
-				data.set(null);
-				let new_url = await get_url_from_clipboard();
-				if (new_url) {
-					url = new_url;
-				}
-			}}
-		>
-			Copy from clipboard
-		</button> -->
-	<button
-		class="blue"
-		disabled={!final_data}
-		onclick={async () => {
-			if (final_data) {
-				let markdown = data_to_markdown_string(final_data);
-				await navigator.clipboard.writeText(markdown);
-				notify("Copied markdown to clipboard :)");
-			}
-		}}
-	>
-		Get markdown
-	</button>
-	{#if navigator.share}
-		<button
-			id="share-button"
-			class="black"
-			onclick={async () => {
-				const url_obj = new URL(window.location.href);
-				url_obj.search = "";
-				if (url) {
-					url_obj.searchParams.delete("my-recipes");
-					url_obj.searchParams.set("url", url);
-				}
-				await navigator.share({
-					title: "Here's a recipe for ya!",
-					url: url_obj.toString(),
-				});
-			}}
-		>
-			Share
-		</button>
-	{/if}
+<Toolbar back_path="/my-recipes" title={final_data?.title}>
+	{#snippet extra_buttons()}
+		{#if navigator.share || true}
+			<button
+				id="share-button"
+				onclick={async () => {
+					const url_obj = new URL(window.location.href);
+					url_obj.search = "";
+					if (url) {
+						url_obj.searchParams.delete("my-recipes");
+						url_obj.searchParams.set("url", url);
+					}
+					await navigator.share({
+						title: "Here's a recipe for ya!",
+						url: url_obj.toString(),
+					});
+				}}
+			>
+				Share
+			</button>
+		{/if}
 
-	<button
-		id="install-button"
-		class="purple"
-		hidden={!installPrompt}
-		onclick={async () => {
-			await installPrompt.prompt();
-			installPrompt = null;
-		}}
-	>
-		Install
-	</button>
+		<button
+			disabled={!final_data}
+			onclick={async () => {
+				if (final_data) {
+					let markdown = data_to_markdown_string(final_data);
+					await navigator.clipboard.writeText(markdown);
+					notify("Copied markdown to clipboard :)");
+				}
+			}}
+		>
+			Get markdown
+		</button>
+
+		<a
+			href={url}
+			class="button-like"
+			target="_blank"
+			class:disabled={!Boolean(url)}
+		>
+			Open the original
+		</a>
+
+		<button
+			onclick={async () => {
+				if (url) {
+					notify("Reloading...");
+					await reload_data(true);
+				} else {
+					notify("No url!", "error");
+				}
+			}}
+			aria-label="Reload"
+		>
+			<svg
+				fill="#000000"
+				height="16px"
+				width="16px"
+				version="1.1"
+				id="Capa_1"
+				xmlns="http://www.w3.org/2000/svg"
+				xmlns:xlink="http://www.w3.org/1999/xlink"
+				viewBox="0 0 489.533 489.533"
+				xml:space="preserve"
+				><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
+					id="SVGRepo_tracerCarrier"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				></g><g id="SVGRepo_iconCarrier">
+					<g>
+						<path
+							style="fill:white;"
+							d="M268.175,488.161c98.2-11,176.9-89.5,188.1-187.7c14.7-128.4-85.1-237.7-210.2-239.1v-57.6c0-3.2-4-4.9-6.7-2.9 l-118.6,87.1c-2,1.5-2,4.4,0,5.9l118.6,87.1c2.7,2,6.7,0.2,6.7-2.9v-57.5c87.9,1.4,158.3,76.2,152.3,165.6 c-5.1,76.9-67.8,139.3-144.7,144.2c-81.5,5.2-150.8-53-163.2-130c-2.3-14.3-14.8-24.7-29.2-24.7c-17.9,0-31.9,15.9-29.1,33.6 C49.575,418.961,150.875,501.261,268.175,488.161z"
+						></path>
+					</g>
+				</g></svg
+			>
+		</button>
+	{/snippet}
 </Toolbar>
 
 <main>
-	<div class="output">
+	<div class="pb5 flex-col gap2">
 		{#if final_data}
-			{#if final_data?.title}
-				<h1>{final_data?.title}</h1>
-			{/if}
-
 			<div class="flex-row bottom mb1 mt1">
 				<div class="flex-col gap1">
 					<SlideCheck
@@ -210,24 +219,6 @@
 				</div>
 
 				<div class="flex-col gap1">
-					<a
-						href={url}
-						class="button-like"
-						target="_blank"
-						class:disabled={!Boolean(url)}
-					>
-						Open the original
-					</a>
-					<button
-						onclick={async () => {
-							if (url) {
-								notify("Reloading...");
-								await reload_data(true);
-							} else {
-								notify("No url!", "error");
-							}
-						}}>Reload</button
-					>
 					<div class="flex-row">
 						<button
 							class="rounded-button black"
@@ -260,9 +251,12 @@
 				{/each}
 			{/each}
 		{:else}
+			<h2>No recipe :/</h2>
 			<Help />
 		{/if}
 	</div>
+
+	<AddRecipeFloater />
 </main>
 
 {#if section_to_focus}

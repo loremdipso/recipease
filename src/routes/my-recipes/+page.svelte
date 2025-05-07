@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { goto } from "$app/navigation";
 	import { get_all_recipes, delete_recipe } from "$lib/data";
-	import { notify } from "$lib/globals.svelte";
-	import { get_url_from_clipboard } from "$lib/utils";
+	import { get_url, get_url_from_clipboard, goto } from "$lib/utils";
+	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 
 	let { current_url } = $props<{
@@ -14,26 +13,20 @@
 	let recipes = $state(get_all_recipes().reverse());
 </script>
 
-<Toolbar title="My Saved Recipes" show_back_button={true} />
+<Toolbar title="My Saved Recipes" back_path="/" />
 
 <main class="flex-col">
 	{#each recipes as recipe}
 		<div
 			class="recipe-row"
 			class:selected={recipe.url && recipe.url === current_url}
-			role="button"
-			onclick={(event) => {
-				event.stopPropagation();
-				goto(`/recipe?${encodeURIComponent(recipe.url)}`);
-			}}
-			tabindex="0"
-			onkeypress={(event) => {
-				// TODO
-			}}
 		>
-			<span class="grow">
+			<a
+				class="grow vertically-centered"
+				href={get_url(`/recipe`, { url: recipe.url })}
+			>
 				{recipe.title || "<missing title>"}
-			</span>
+			</a>
 
 			<button
 				class="pink shrink"
@@ -45,29 +38,18 @@
 				Delete
 			</button>
 		</div>
+	{:else}
+		<div class="recipe-row">No recipes yet</div>
 	{/each}
 
-	<div class="flex-col">
-		<button
-			class="green grow m1"
-			onclick={async () => {
-				let url = await get_url_from_clipboard();
-				if (url) {
-					goto(`/recipe?${encodeURIComponent(url)}`);
-				}
-			}}
-		>
-			Add new
-		</button>
-	</div>
+	<AddRecipeFloater />
 </main>
 
 <style lang="scss">
 	.recipe-row {
 		display: flex;
 		gap: 5px;
-		align-items: center;
-		cursor: pointer;
+		align-items: stretch;
 		background: black;
 		padding: 0.5rem;
 		margin: 0.1rem;
