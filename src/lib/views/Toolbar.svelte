@@ -10,19 +10,30 @@
 	}>();
 </script>
 
+{#snippet title_comp()}
+	{#if title}
+		<div class="mw0">
+			<h1 {title}>
+				{title}
+			</h1>
+		</div>
+	{/if}
+{/snippet}
+
 <nav class="full-width flex-col pb1">
-	<div class="full-width pb1 wrap rgap0_5 gap0_5">
-		<div class="flex-row grow shrink-children flex-start mw0">
+	<div class="full-width wrap">
+		<div class="flex-row grow shrink-children flex-start mw0 ml0_5 p0_5">
 			{#if back_path}
 				<button
-					class="shrink p0_5"
+					class="shrink white-text flex-row vertically-centered p0 gap0_5 mw0"
 					onclick={() => goto(back_path, { is_going_back: true })}
 					aria-label="Go back"
 				>
 					<svg
-						height="18.01"
+						height="16px"
+						width="16px"
+						style="min-width: 16px"
 						viewBox="0 0 278.57599 288.16"
-						width="17.410999"
 						xmlns="http://www.w3.org/2000/svg"
 						><path
 							d="m239.824 111.168h136.416l-142.4 144.08 142.4 144.08h-136.416l-142.16-144.08z"
@@ -30,20 +41,15 @@
 							transform="translate(-97.664 -111.168)"
 						/></svg
 					>
+					{@render title_comp()}
 				</button>
-			{/if}
-
-			{#if title}
-				<div class="p0_5 mw0">
-					<h1 {title}>
-						{title}
-					</h1>
-				</div>
+			{:else}
+				{@render title_comp()}
 			{/if}
 		</div>
 
-		<div class="flex-row shrink-children flex-start mla">
-			{#if $installPrompt}
+		{#if $installPrompt}
+			<div class="flex-row shrink-children flex-start mla">
 				<button
 					onclick={async () => {
 						await $installPrompt.prompt();
@@ -52,8 +58,8 @@
 				>
 					Install
 				</button>
-			{/if}
-		</div>
+			</div>
+		{/if}
 	</div>
 
 	{#if extra_buttons}

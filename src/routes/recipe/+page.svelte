@@ -104,18 +104,6 @@
 
 <Toolbar back_path="/my-recipes" title={final_data?.title}>
 	{#snippet extra_buttons()}
-		{#if final_data}
-			<button
-				class="warning"
-				onclick={async (event) => {
-					event.stopPropagation();
-					recipe_to_delete = url;
-				}}
-			>
-				Delete
-			</button>
-		{/if}
-
 		{#if final_data && navigator.share}
 			<button
 				id="share-button"
@@ -135,18 +123,6 @@
 				Share
 			</button>
 		{/if}
-
-		<button
-			onclick={async () => {
-				if (final_data) {
-					let markdown = data_to_markdown_string(final_data);
-					await navigator.clipboard.writeText(markdown);
-					notify("Copied markdown to clipboard :)");
-				}
-			}}
-		>
-			Get markdown
-		</button>
 
 		<button
 			onclick={async () => {
@@ -194,7 +170,24 @@
 					>
 						Open the original
 					</a>
+
 					<hr />
+
+					<button
+						onclick={async () => {
+							if (final_data) {
+								let markdown =
+									data_to_markdown_string(final_data);
+								await navigator.clipboard.writeText(markdown);
+								notify("Copied markdown to clipboard :)");
+							}
+						}}
+					>
+						Get markdown
+					</button>
+
+					<hr />
+
 					<SlideCheck
 						text="Enable colors"
 						checked={show_colors}
@@ -212,6 +205,19 @@
 								set_wake_lock(checked);
 							}}
 						/>
+					{/if}
+
+					{#if final_data}
+						<hr />
+						<button
+							class="warning"
+							onclick={async (event) => {
+								event.stopPropagation();
+								recipe_to_delete = url;
+							}}
+						>
+							Delete recipe
+						</button>
 					{/if}
 				</div>
 			{/snippet}

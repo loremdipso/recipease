@@ -7,6 +7,9 @@
 
 <Toolbar title="RecipEase">
 	{#snippet extra_buttons()}
+		<a class="button-like" href={get_url(`/shopping-lists`)}>
+			Shopping lists</a
+		>
 		<a class="button-like" href={get_url(`/my-recipes`)}> My Recipes </a>
 	{/snippet}
 </Toolbar>

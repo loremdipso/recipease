@@ -4,4 +4,8 @@
 
 <Toolbar title="Terms of Service" back_path="/" />
 
-<main>TODO</main>
+<main>
+	<div class="card">
+		<p>TODO</p>
+	</div>
+</main>

@@ -132,6 +132,10 @@ button:disabled {
 	margin-bottom: 1rem;
 }
 
+.ml0_5 {
+	margin-left: 0.5rem;
+}
+
 .mb0_5 {
 	margin-bottom: 0.5rem;
 }
@@ -152,6 +156,10 @@ button:disabled {
 
 .green-text {
 	color: #338356;
+}
+
+.white-text {
+	color: white;
 }
 
 .blue {
@@ -390,4 +398,14 @@ hr {
 
 .selectable:hover {
 	cursor: pointer;
+}
+
+.card {
+	background-color: black;
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+.pl1 {
+	padding-left: 1rem;
 }

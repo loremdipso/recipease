@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
 	import Toolbar from "$lib/views/Toolbar.svelte";
 </script>
 
-<Toolbar title="Terms of Service" back_path="/" />
+<Toolbar title="Shopping lists" back_path="/"></Toolbar>
 
 <main>
 	<div class="card">
