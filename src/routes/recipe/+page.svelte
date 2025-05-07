@@ -23,6 +23,7 @@
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 	import Popup from "$lib/views/Popup.svelte";
 	import { afterNavigate } from "$app/navigation";
+	import HamburgerMenu from "$lib/views/HamburgerMenu.svelte";
 
 	let url = $state<string | null>(null);
 
@@ -113,48 +114,39 @@
 			>
 				Delete
 			</button>
+		{/if}
 
-			{#if navigator.share}
-				<button
-					id="share-button"
-					onclick={async () => {
-						const url_obj = new URL(window.location.href);
-						url_obj.search = "";
-						if (url) {
-							url_obj.searchParams.delete("my-recipes");
-							url_obj.searchParams.set("url", url);
-						}
-						await navigator.share({
-							title: "Here's a recipe for ya!",
-							url: url_obj.toString(),
-						});
-					}}
-				>
-					Share
-				</button>
-			{/if}
-
+		{#if final_data && navigator.share}
 			<button
+				id="share-button"
 				onclick={async () => {
-					if (final_data) {
-						let markdown = data_to_markdown_string(final_data);
-						await navigator.clipboard.writeText(markdown);
-						notify("Copied markdown to clipboard :)");
+					const url_obj = new URL(window.location.href);
+					url_obj.search = "";
+					if (url) {
+						url_obj.searchParams.delete("my-recipes");
+						url_obj.searchParams.set("url", url);
 					}
+					await navigator.share({
+						title: "Here's a recipe for ya!",
+						url: url_obj.toString(),
+					});
 				}}
 			>
-				Get markdown
+				Share
 			</button>
 		{/if}
 
-		<a
-			href={url}
-			class="button-like"
-			target="_blank"
-			class:disabled={!Boolean(url)}
+		<button
+			onclick={async () => {
+				if (final_data) {
+					let markdown = data_to_markdown_string(final_data);
+					await navigator.clipboard.writeText(markdown);
+					notify("Copied markdown to clipboard :)");
+				}
+			}}
 		>
-			Open the original
-		</a>
+			Get markdown
+		</button>
 
 		<button
 			onclick={async () => {
@@ -191,6 +183,19 @@
 				</g></svg
 			>
 		</button>
+
+		<HamburgerMenu>
+			{#snippet items()}
+				<a
+					href={url}
+					class="button-like"
+					target="_blank"
+					class:disabled={!Boolean(url)}
+				>
+					Open the original
+				</a>
+			{/snippet}
+		</HamburgerMenu>
 	{/snippet}
 </Toolbar>
 
