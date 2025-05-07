@@ -13,7 +13,7 @@ const config = {
 		// See https://svelte.dev/docs/kit/adapters for more information about adapters.
 		adapter: adapter({
 			pages: "docs",
-			fallback: "200.html", // may differ from host to host
+			fallback: "404.html", // may differ from host to host
 		}),
 	},
 };
