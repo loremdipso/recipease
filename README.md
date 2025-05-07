@@ -1,38 +1,19 @@
-# sv
+# RecipEase
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+Simple [PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) that you can install on phone or desktop. Attempts to grab only the essential portions of a recipe for your convenience. Supports exporting to Markdown. This doesn't need an account and doesn't store any information about you.
 
-## Creating a project
+See it live at <https://loremdipso.com/recipe-scraper>
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Installation
 
-```bash
-# create a new project in the current directory
-npx sv create
+If you see an "Install" button then click on it. If not then you can't install, sorry :/
 
-# create a new project in my-app
-npx sv create my-app
-```
+![Install](images/install.png)
 
-## Developing
+## Usage
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+You can copy the recipe's URL to your clipboard and then use the "Copy recipe from clipboard" button, but if you've installed this app then you can simply share the recipe website with it.
 
-```bash
-npm run dev
+![Share part 1](images/share_1.png)
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+![Share part 2](images/share_2.png)
