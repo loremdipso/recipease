@@ -1,0 +1,1 @@
+import{t,a}from"./BrwN9nNx.js";import"./gWoLMp3U.js";import{n as p}from"./DFN1Dm2q.js";var o=t('<p>Welcome to recipe scraper!</p> <p>New here? <a href="https://github.com/loremdipso/recipe-scraper?tab=readme-ov-file#recipe-scraper" target="_blank">Here</a> are some instructions to get you started.</p>',1);function c(e){var r=o();p(2),a(e,r)}export{c as H};
