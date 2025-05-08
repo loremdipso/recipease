@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from "svelte";
 	import { fade } from "svelte/transition";
+	import ClickEater from "./ClickEater.svelte";
 
 	let { click, transparent, content } = $props<{
 		click: () => void;
@@ -25,7 +26,13 @@
 	role="button"
 >
 	{#if content}
-		{@render content()}
+		<div class="popup">
+			<ClickEater>
+				{#snippet content()}
+					{@render content()}
+				{/snippet}
+			</ClickEater>
+		</div>
 	{/if}
 </div>
 
@@ -46,5 +53,13 @@
 		&.transparent {
 			background: none;
 		}
+	}
+
+	.popup {
+		background: #535353;
+		margin: 1rem;
+		padding: 0.5rem;
+		border-radius: 10px;
+		z-index: 10002;
 	}
 </style>

@@ -34,13 +34,3 @@
 		</div>
 	{/snippet}
 </Overlay>
-
-<style lang="scss">
-	.popup {
-		background: #535353;
-		margin: 1rem;
-		padding: 0.5rem;
-		border-radius: 10px;
-		z-index: 10002;
-	}
-</style>
