@@ -17,35 +17,37 @@
 
 <Toolbar title="My Saved Recipes" back_path="/" />
 
-<main class="list">
-	{#each recipes as recipe}
-		<div
-			class="flex-row"
-			class:selected={recipe.url &&
-				recipe.url === previously_selected_recipe}
-		>
-			<a
-				class="grow vertically-centered p0_5"
-				href={get_url(`/recipe`, { url: recipe.url })}
+<main>
+	<div class="list">
+		{#each recipes as recipe}
+			<div
+				class="flex-row"
+				class:selected={recipe.url &&
+					recipe.url === previously_selected_recipe}
 			>
-				{recipe.title || "<missing title>"}
-			</a>
+				<a
+					class="grow vertically-centered p0_5"
+					href={get_url(`/recipe`, { url: recipe.url })}
+				>
+					{recipe.title || "<missing title>"}
+				</a>
 
-			<button
-				class="shrink"
-				onclick={(event) => {
-					event.stopPropagation();
-					recipe_to_delete = recipe.url;
-				}}
-				title="Delete"
-				aria-label="Delete"
-			>
-				<TrashCanIcon />
-			</button>
-		</div>
-	{:else}
-		<div class="recipe-row">No recipes yet</div>
-	{/each}
+				<button
+					class="shrink"
+					onclick={(event) => {
+						event.stopPropagation();
+						recipe_to_delete = recipe.url;
+					}}
+					title="Delete"
+					aria-label="Delete"
+				>
+					<TrashCanIcon />
+				</button>
+			</div>
+		{:else}
+			<div class="recipe-row">No recipes yet</div>
+		{/each}
+	</div>
 
 	<AddRecipeFloater />
 
