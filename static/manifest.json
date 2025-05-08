@@ -1,7 +1,7 @@
 {
-	"short_name": "Recipe Scraper",
-	"name": "Recipe Scraper",
-	"description": "Scrape recipes!",
+	"short_name": "RecipEase",
+	"name": "RecipEase",
+	"description": "Make recipes Easy again",
 	"icons": [
 		{
 			"src": "favicon-192x192.png",
