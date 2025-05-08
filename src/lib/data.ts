@@ -53,10 +53,23 @@ export function find_recipe_by_url(url: string): IRecipe | null {
 	return null;
 }
 
-export function add_recipe(data: IRecipe, save = true): IRecipe[] {
+export function add_recipe(new_recipe: IRecipe, save = true): IRecipe[] {
 	let recipes = get_all_recipes();
-	recipes = delete_recipe(recipes, data.url, false);
-	recipes.push(data);
+	recipes = delete_recipe(recipes, new_recipe.url, false);
+	recipes.push(new_recipe);
+	if (save) {
+		save_recipes(recipes);
+	}
+	return recipes;
+}
+
+export function update_recipe(updated_recipe: IRecipe, save = true): IRecipe[] {
+	let recipes = get_all_recipes();
+	for (let i = 0; i < recipes.length; i++) {
+		if (recipes[i].url === updated_recipe.url) {
+			recipes[i] = updated_recipe;
+		}
+	}
 	if (save) {
 		save_recipes(recipes);
 	}

@@ -18,10 +18,10 @@
 
 <Toolbar title="My Saved Recipes" back_path="/" />
 
-<main class="flex-col">
+<main class="list">
 	{#each recipes as recipe}
 		<div
-			class="recipe-row"
+			class="flex-row"
 			class:selected={recipe.url && recipe.url === current_url}
 		>
 			<a

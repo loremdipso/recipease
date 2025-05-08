@@ -26,11 +26,11 @@
      inkscape:pagecheckerboard="true"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.0123442"
-     inkscape:cx="40.003097"
-     inkscape:cy="47.45709"
-     inkscape:window-width="1920"
-     inkscape:window-height="1043"
+     inkscape:zoom="2.8458845"
+     inkscape:cx="-53.761845"
+     inkscape:cy="99.968921"
+     inkscape:window-width="2560"
+     inkscape:window-height="1403"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -50,22 +50,69 @@
        x="51.579975"
        y="35.753944" />
     <ellipse
-       style="fill:#46ff00;fill-opacity:1;stroke:#ffffff;stroke-width:0;stroke-linecap:round;stroke-miterlimit:3.98"
+       style="fill:#e9afaf;fill-opacity:1;stroke:#de8787;stroke-width:0;stroke-linecap:round;stroke-miterlimit:3.98"
        id="path1405"
        cx="67.703781"
        cy="51.87775"
        rx="16.123804"
        ry="16.123806" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:22.5778px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:#ffffff;stroke-width:0.264583"
-       x="53.107254"
-       y="59.621937"
-       id="text5186"><tspan
-         sodipodi:role="line"
-         id="tspan5184"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5778px;font-family:'Latin Modern Roman Demi';-inkscape-font-specification:'Latin Modern Roman Demi';stroke:#ffffff;stroke-width:0.264583"
-         x="53.107254"
-         y="59.621937">RS</tspan></text>
+    <g
+       id="g2340"
+       transform="translate(33.143798,-3.0751776)">
+      <rect
+         style="fill:#999999;stroke:none;stroke-width:144.187;stroke-linecap:round;stroke-miterlimit:3.98"
+         id="rect1605"
+         width="13.118485"
+         height="10.209814"
+         x="27.456924"
+         y="55.988106" />
+      <rect
+         style="fill:#f9f9f9;stroke:none;stroke-width:67.1002;stroke-linecap:round;stroke-miterlimit:3.98"
+         id="rect1835"
+         width="0.85753405"
+         height="5.6387682"
+         x="29.238131"
+         y="60.198807" />
+      <rect
+         style="fill:#f9f9f9;stroke:none;stroke-width:65.5186;stroke-linecap:round;stroke-miterlimit:3.98"
+         id="rect2297"
+         width="0.85753405"
+         height="5.3760915"
+         x="38.043335"
+         y="60.608433" />
+      <rect
+         style="fill:#f9f9f9;stroke:none;stroke-width:75.3954;stroke-linecap:round;stroke-miterlimit:3.98"
+         id="rect2299"
+         width="0.85753405"
+         height="7.1191206"
+         x="33.879177"
+         y="58.671112" />
+      <g
+         id="g1541"
+         style="fill:#a05a2c">
+        <g
+           id="g1535"
+           style="fill:#a05a2c">
+          <circle
+             style="fill:#a05a2c;stroke:none;stroke-width:100;stroke-linecap:round;stroke-miterlimit:3.98"
+             id="path1447"
+             cx="29.254889"
+             cy="51.814178"
+             r="7.5595431" />
+          <circle
+             style="fill:#a05a2c;stroke:none;stroke-width:52.3844;stroke-linecap:round;stroke-miterlimit:3.98"
+             id="circle1449"
+             cx="35.403358"
+             cy="47.667953"
+             r="3.960021" />
+        </g>
+        <circle
+           style="fill:#a05a2c;stroke:none;stroke-width:100;stroke-linecap:round;stroke-miterlimit:3.98"
+           id="circle1451"
+           cx="39.865074"
+           cy="52.395142"
+           r="7.5595431" />
+      </g>
+    </g>
   </g>
 </svg>

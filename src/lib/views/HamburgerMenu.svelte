@@ -59,11 +59,10 @@
 <style lang="scss">
 	.dropdown-menu {
 		background: #282e33;
-		position: fixed;
+		position: absolute;
 		z-index: 10001;
 		padding: 0.5rem;
 		border-radius: 10px;
-		right: 20px;
 
 		// TODO: add a pointy radius here
 		// border-top-right-radius: 0;

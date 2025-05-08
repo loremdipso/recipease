@@ -4,10 +4,11 @@
 	import type { Snippet } from "svelte";
 	import PreferencesButton from "./PreferencesButton.svelte";
 
-	let { back_path, title, extra_buttons } = $props<{
-		extra_buttons?: Snippet;
-		back_path?: string;
+	let { title, back_path, extra_buttons, title_snippet } = $props<{
 		title?: string;
+		back_path?: string;
+		extra_buttons?: Snippet;
+		title_snippet?: Snippet;
 	}>();
 </script>
 
@@ -18,15 +19,17 @@
 				{title}
 			</h1>
 		</div>
+	{:else if title_snippet}
+		{@render title_snippet()}
 	{/if}
 {/snippet}
 
 <nav class="full-width flex-col pb1">
 	<div class="full-width wrap">
-		<div class="flex-row grow shrink-children flex-start mw0 ml0_5 p0_5">
+		<div class="flex-row grow flex-start ml0_5 p0_5 gap0_5">
 			{#if back_path}
 				<button
-					class="shrink white-text flex-row vertically-centered p0 gap0_5 mw0"
+					class="shrink white-text flex-row vertically-centered p0 gap0_5"
 					onclick={() => goto(back_path, { is_going_back: true })}
 					title="Go back"
 					aria-label="Go back"
@@ -45,40 +48,42 @@
 						/>
 					</svg>
 
-					{@render title_comp()}
+					{#if !title_snippet}
+						{@render title_comp()}
+					{/if}
 				</button>
+
+				{#if title_snippet}
+					{@render title_comp()}
+				{/if}
 			{:else}
 				{@render title_comp()}
 			{/if}
-
-			<div class="mla vertically-centered">
-				<PreferencesButton />
-			</div>
 		</div>
 	</div>
 
-	{#if extra_buttons || $installPrompt}
-		<div
-			class="flex-row grow shrink-children flex-end gap1 wrap extra-buttons pr1 no-print"
-		>
-			{#if $installPrompt}
-				<div class="flex-row shrink-children flex-start mla">
-					<button
-						onclick={async () => {
-							await $installPrompt.prompt();
-							$installPrompt = null;
-						}}
-					>
-						Install
-					</button>
-				</div>
-			{/if}
+	<div
+		class="flex-row grow shrink-children flex-start gap1 wrap extra-buttons pr1 no-print"
+	>
+		{#if $installPrompt}
+			<button
+				onclick={async () => {
+					await $installPrompt.prompt();
+					$installPrompt = null;
+				}}
+			>
+				Install
+			</button>
+		{/if}
 
-			{#if extra_buttons}
-				{@render extra_buttons()}
-			{/if}
+		{#if extra_buttons}
+			{@render extra_buttons()}
+		{/if}
+
+		<div class="vertically-centered mla">
+			<PreferencesButton />
 		</div>
-	{/if}
+	</div>
 </nav>
 
 <style lang="scss">
@@ -93,6 +98,7 @@
 	h1 {
 		overflow-x: hidden;
 		text-overflow: ellipsis;
-		white-space: nowrap;
+		// I tried this, but recipe names are hella long
+		// white-space: nowrap;
 	}
 </style>

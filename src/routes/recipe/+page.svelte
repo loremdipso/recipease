@@ -10,7 +10,9 @@
 		fix_data,
 		get_all_recipes,
 		get_meta_sections,
+		save_recipes,
 		try_load_url,
+		update_recipe,
 	} from "$lib/data";
 	import { get_preference, save_preference } from "$lib/preferences";
 	import { notify } from "$lib/globals.svelte";
@@ -41,6 +43,7 @@
 	let checkedItems = $state<{ [key: string]: boolean }>({});
 	let section_to_focus = $state<ISection | null>(null);
 	let recipe_to_delete = $state<string | null>(null);
+	let title_to_edit = $state<string | null>(null);
 
 	let meta_sections = $derived(
 		get_meta_sections(
@@ -86,6 +89,19 @@
 		section_to_focus = null;
 	}
 
+	function save_title() {
+		if (data) {
+			data.update((recipe) => {
+				if (recipe && title_to_edit) {
+					recipe.title = title_to_edit;
+					update_recipe(recipe);
+				}
+				return recipe;
+			});
+		}
+		title_to_edit = null;
+	}
+
 	let should_keep_screen_awake = $state(get_preference("keep_screen_awake"));
 
 	// Set wake lock to true by default
@@ -100,11 +116,88 @@
 	});
 </script>
 
-<Toolbar back_path="/my-recipes" title={final_data?.title}>
+<Toolbar back_path="/my-recipes">
+	{#snippet title_snippet()}
+		<div class="flex-row vertically-centered grow">
+			<div class="grow flex-col">
+				{#if title_to_edit}
+					<input
+						bind:value={title_to_edit}
+						onchange={() => {
+							save_title();
+						}}
+					/>
+				{:else}
+					<h1>{final_data?.title}</h1>
+				{/if}
+			</div>
+
+			<button
+				class="shrink"
+				title={title_to_edit ? "Save" : "Edit"}
+				aria-label={title_to_edit ? "Save" : "Edit"}
+				onclick={() => {
+					if (title_to_edit) {
+						save_title();
+					} else {
+						title_to_edit = final_data?.title || "";
+					}
+				}}
+			>
+				{#if title_to_edit}
+					<svg
+						viewBox="0 0 32 32"
+						xmlns="http://www.w3.org/2000/svg"
+						xmlns:xlink="http://www.w3.org/1999/xlink"
+						width="16px"
+						height="16px"
+						style="min-width: 16px"
+						fill="#000000"
+					>
+						<g
+							stroke="none"
+							stroke-width="1"
+							fill="none"
+							fill-rule="evenodd"
+						>
+							<g
+								transform="translate(-154.000000, -517.000000)"
+								fill="#ffffff"
+							>
+								<path
+									d="M172,522 C172,521.447 172.448,521 173,521 C173.552,521 174,521.447 174,522 L174,526 C174,526.553 173.552,527 173,527 C172.448,527 172,526.553 172,526 L172,522 L172,522 Z M163,529 L177,529 C177.552,529 178,528.553 178,528 L178,517 L162,517 L162,528 C162,528.553 162.448,529 163,529 L163,529 Z M182,517 L180,517 L180,529 C180,530.104 179.104,531 178,531 L162,531 C160.896,531 160,530.104 160,529 L160,517 L158,517 C155.791,517 154,518.791 154,521 L154,545 C154,547.209 155.791,549 158,549 L182,549 C184.209,549 186,547.209 186,545 L186,521 C186,518.791 184.209,517 182,517 L182,517 Z"
+								>
+								</path>
+							</g>
+						</g>
+					</svg>
+				{:else}
+					<svg
+						width="16px"
+						height="16px"
+						style="min-width: 16px"
+						viewBox="0 0 16 16"
+						fill="none"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<g>
+							<path
+								d="M8.29289 3.70711L1 11V15H5L12.2929 7.70711L8.29289 3.70711Z"
+								fill="#ffffff"
+							></path>
+							<path
+								d="M9.70711 2.29289L13.7071 6.29289L15.1716 4.82843C15.702 4.29799 16 3.57857 16 2.82843C16 1.26633 14.7337 0 13.1716 0C12.4214 0 11.702 0.297995 11.1716 0.828428L9.70711 2.29289Z"
+								fill="#ffffff"
+							></path>
+						</g>
+					</svg>
+				{/if}
+			</button>
+		</div>
+	{/snippet}
 	{#snippet extra_buttons()}
 		{#if final_data && navigator.share}
 			<button
-				id="share-button"
 				onclick={async () => {
 					const url_obj = new URL(window.location.href);
 					url_obj.search = "";
@@ -139,16 +232,14 @@
 				height="16px"
 				width="16px"
 				version="1.1"
-				id="Capa_1"
 				xmlns="http://www.w3.org/2000/svg"
 				xmlns:xlink="http://www.w3.org/1999/xlink"
 				viewBox="0 0 489.533 489.533"
 				xml:space="preserve"
-				><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g
-					id="SVGRepo_tracerCarrier"
+				><g stroke-width="0"></g><g
 					stroke-linecap="round"
 					stroke-linejoin="round"
-				></g><g id="SVGRepo_iconCarrier">
+				></g><g>
 					<g>
 						<path
 							style="fill:white;"
