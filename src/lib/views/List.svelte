@@ -26,10 +26,8 @@
 		switch (fragment.type) {
 			case FragmentType.Ingredient:
 				return "ingredient";
-				break;
 			case FragmentType.Temperature:
 				return "temperature";
-				break;
 			case FragmentType.Amount:
 				return "amount";
 			default:
@@ -52,8 +50,8 @@
 	});
 </script>
 
-<div class="list" bind:this={element}>
-	<header class="flex-row vertically-centered gap1 mb0_5">
+<div>
+	<header class="flex-row vertically-centered gap1">
 		{#if section.level === 2}
 			<h2>{section.text}</h2>
 		{:else if section.level === 3}
@@ -71,48 +69,53 @@
 		</button>
 	</header>
 
-	{#each section.rows as row}
-		<label class="selectable" class:selected={is_row_selected(row)}>
-			<input
-				type="checkbox"
-				checked={checkedItems[row.id]}
-				onchange={(e) => {
-					checkedItems[row.id] = (e.target! as any).checked;
-				}}
-			/>
+	<div class="list" bind:this={element}>
+		{#each section.rows as row}
+			<label class="selectable" class:selected={is_row_selected(row)}>
+				<input
+					type="checkbox"
+					checked={checkedItems[row.id]}
+					onchange={(e) => {
+						checkedItems[row.id] = (e.target! as any).checked;
+					}}
+				/>
 
-			<div>
-				{#each row.fragments as fragment}
-					{#if fragment.type === FragmentType.Plain}
-						<span>{fragment.text}</span>
-					{:else if fragment.type === FragmentType.Bold}
-						<b>{fragment.text}</b>
-					{:else if fragment.type === FragmentType.Italic}
-						<b>{fragment.text}</b>
-					{:else}
-						<span
-							class={get_class(fragment)}
-							class:failed={fragment.failed}
-							class:converted={fragment.converted}
-							class:selected={selectedKeyword &&
-								selectedKeyword == fragment.id}
-							role="button"
-							tabindex="0"
-							onkeypress={(event) => {
-								// TODO
-							}}
-							onclick={(event) => {
-								if (fragment.type === FragmentType.Ingredient) {
-									event.preventDefault();
-									onHighlightKeyword(fragment.id);
-								}
-							}}
-						>
-							{fragment.text}
-						</span>
-					{/if}
-				{/each}
-			</div>
-		</label>
-	{/each}
+				<div>
+					{#each row.fragments as fragment}
+						{#if fragment.type === FragmentType.Plain}
+							<span>{fragment.text}</span>
+						{:else if fragment.type === FragmentType.Bold}
+							<b>{fragment.text}</b>
+						{:else if fragment.type === FragmentType.Italic}
+							<b>{fragment.text}</b>
+						{:else}
+							<span
+								class={get_class(fragment)}
+								class:failed={fragment.failed}
+								class:converted={fragment.converted}
+								class:selected={selectedKeyword &&
+									selectedKeyword == fragment.id}
+								role="button"
+								tabindex="0"
+								onkeypress={(event) => {
+									// TODO
+								}}
+								onclick={(event) => {
+									if (
+										fragment.type ===
+										FragmentType.Ingredient
+									) {
+										event.preventDefault();
+										onHighlightKeyword(fragment.id);
+									}
+								}}
+							>
+								{fragment.text}
+							</span>
+						{/if}
+					{/each}
+				</div>
+			</label>
+		{/each}
+	</div>
 </div>

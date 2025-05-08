@@ -10,7 +10,6 @@
 		fix_data,
 		get_all_recipes,
 		get_meta_sections,
-		save_recipes,
 		try_load_url,
 		update_recipe,
 	} from "$lib/data";

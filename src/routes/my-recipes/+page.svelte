@@ -20,10 +20,7 @@
 
 <main class="list">
 	{#each recipes as recipe}
-		<div
-			class="flex-row"
-			class:selected={recipe.url && recipe.url === current_url}
-		>
+		<div class="flex-row">
 			<a
 				class="grow vertically-centered p0_5"
 				href={get_url(`/recipe`, { url: recipe.url })}
@@ -62,20 +59,3 @@
 		/>
 	{/if}
 </main>
-
-<style lang="scss">
-	.recipe-row {
-		display: flex;
-		gap: 5px;
-		align-items: stretch;
-		background-color: #1a1a1a;
-	}
-
-	.recipe-row:nth-child(even) {
-		background: black;
-	}
-
-	.recipe-row.selected {
-		background-color: red;
-	}
-</style>

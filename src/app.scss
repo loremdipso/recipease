@@ -218,23 +218,27 @@ button:disabled {
 	padding-bottom: 5rem;
 }
 
+.list > .selected {
+	background-color: red;
+}
+
 .list input:checked + * {
 	text-decoration: line-through;
 	opacity: 0.5;
 }
 
-.list label {
+.list > * {
 	display: flex;
 	gap: 10px;
 	padding: 0.5rem;
 	overflow: hidden;
 }
 
-.list label:nth-child(even) {
+.list > *:nth-child(even) {
 	background-color: #1a1a1a;
 }
 
-.list label:nth-child(odd) {
+.list > *:nth-child(odd) {
 	background-color: black;
 }
 
