@@ -41,12 +41,6 @@
 			in:fade={{ duration }}
 			out:fade={{ duration }}
 			class="dropdown-menu"
-			onclick={(event) => {
-				event.stopPropagation();
-			}}
-			onkeypress={() => {}}
-			tabindex="0"
-			role="button"
 		>
 			{@render items()}
 		</div>

@@ -166,6 +166,7 @@
 						<a
 							href={url}
 							target="_blank"
+							class="button-like"
 							class:disabled={!Boolean(url)}
 						>
 							Open the original
@@ -224,8 +225,7 @@
 							<hr />
 							<button
 								class="warning"
-								onclick={async (event) => {
-									event.stopPropagation();
+								onclick={async () => {
 									recipe_to_delete = url;
 								}}
 							>

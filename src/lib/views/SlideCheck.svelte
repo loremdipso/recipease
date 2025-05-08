@@ -6,14 +6,26 @@
 	}>();
 </script>
 
-<label class="selectable">
-	<input
-		type="checkbox"
-		{checked}
-		onchange={(e) => onchange((e.target as any).checked)}
-	/>
-	<span class="slide-label">{text}</span>
-</label>
+<div
+	onclick={(event) => {
+		event.stopPropagation();
+	}}
+	onkeypress={() => {}}
+	tabindex="0"
+	role="button"
+>
+	<label class="selectable">
+		<input
+			type="checkbox"
+			{checked}
+			onchange={(e) => {
+				e.stopPropagation();
+				onchange((e.target as any).checked);
+			}}
+		/>
+		<span class="slide-label">{text}</span>
+	</label>
+</div>
 
 <style lang="scss">
 	label {
