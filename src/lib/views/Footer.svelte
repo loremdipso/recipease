@@ -5,6 +5,7 @@
 <div class="footer no-print">
 	<a href={get_url("/privacy-policy")}> Privacy Policy </a>
 	<a href={get_url("/terms")}>Terms of Service</a>
+	<a href="https://github.com/loremdipso/recipease/issues/new">Contact us</a>
 </div>
 
 <style lang="scss">

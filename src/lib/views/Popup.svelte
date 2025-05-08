@@ -10,7 +10,7 @@
 
 <Overlay click={cancel}>
 	{#snippet content()}
-		<div class="popup flex-col">
+		<div class="flex-col">
 			<h1>{text}</h1>
 
 			<div class="mla">
