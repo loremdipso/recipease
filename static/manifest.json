@@ -19,7 +19,7 @@
 	"background_color": "#ffffff",
 	"start_url": "/recipease",
 	"share_target": {
-		"action": "https://loremdipso.com/recipease",
+		"action": "https://loremdipso.com/recipease/recipe",
 		"method": "GET",
 		"enctype": "application/x-www-form-urlencoded",
 		"params": {
