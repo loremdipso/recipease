@@ -28,6 +28,7 @@
 	import PencilIcon from "$lib/icons/pencil_icon.svelte";
 	import SaveIcon from "$lib/icons/save_icon.svelte";
 	import ReloadIcon from "$lib/icons/reload_icon.svelte";
+	import ShareIcon from "$lib/icons/share_icon.svelte";
 
 	let url = $state<string | null>(null);
 
@@ -185,8 +186,10 @@
 						url: url_obj.toString(),
 					});
 				}}
+				title="Share"
+				aria-label="Share"
 			>
-				Share
+				<ShareIcon />
 			</button>
 		{/if}
 

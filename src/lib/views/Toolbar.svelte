@@ -54,7 +54,7 @@
 	</div>
 
 	<div
-		class="flex-row grow shrink-children flex-start gap1 wrap extra-buttons pr1 pl1 no-print"
+		class="flex-row grow shrink-children flex-end gap1 wrap extra-buttons pr1 pl1 no-print"
 	>
 		{#if $installPrompt}
 			<button
@@ -71,7 +71,7 @@
 			{@render extra_buttons()}
 		{/if}
 
-		<div class="vertically-centered mla">
+		<div class="vertically-centered">
 			<PreferencesButton />
 		</div>
 	</div>

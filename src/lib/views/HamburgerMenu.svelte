@@ -51,6 +51,7 @@
 
 		// TODO: add a pointy radius here
 		// border-top-right-radius: 0;
-		// transform: translateY(10px);
+		transform: translateX(calc(-100% + 1rem));
+		width: 250px;
 	}
 </style>
