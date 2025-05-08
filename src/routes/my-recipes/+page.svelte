@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { page } from "$app/state";
 	import { get_all_recipes, delete_recipe } from "$lib/data";
 	import TrashCanIcon from "$lib/icons/trash_can_icon.svelte";
+	import type { IPageData } from "$lib/types";
 	import { get_url } from "$lib/utils";
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 	import Popup from "$lib/views/Popup.svelte";
@@ -8,14 +10,20 @@
 
 	let recipes = $state(get_all_recipes().reverse());
 	let recipe_to_delete = $state<string | null>(null);
-	let is_selected = true;
+	const previously_selected_recipe = $derived(
+		(page.state as IPageData)?.previously_selected_recipe
+	);
 </script>
 
 <Toolbar title="My Saved Recipes" back_path="/" />
 
 <main class="list">
 	{#each recipes as recipe}
-		<div class="flex-row" class:selected={is_selected}>
+		<div
+			class="flex-row"
+			class:selected={recipe.url &&
+				recipe.url === previously_selected_recipe}
+		>
 			<a
 				class="grow vertically-centered p0_5"
 				href={get_url(`/recipe`, { url: recipe.url })}

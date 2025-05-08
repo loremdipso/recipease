@@ -44,3 +44,8 @@ export interface IPreferences {
 	keep_screen_awake: boolean;
 	show_colors: boolean;
 }
+
+export interface IPageData {
+	is_going_back?: boolean;
+	previously_selected_recipe?: string | null;
+}

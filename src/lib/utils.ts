@@ -1,5 +1,5 @@
 import { notify } from "./globals.svelte";
-import type { Keywords } from "./types";
+import type { IPageData, Keywords } from "./types";
 import { goto as native_goto } from "$app/navigation";
 import { base } from "$app/paths";
 
@@ -148,12 +148,14 @@ export async function get_url_from_clipboard(): Promise<string | undefined> {
 export async function goto(
 	url: string,
 	extras?: {
-		is_going_back?: boolean;
+		page_data?: IPageData;
 		query_params?: { [key: string]: string };
 	}
 ) {
 	await native_goto(get_url(url, extras?.query_params), {
-		state: { is_going_back: extras?.is_going_back },
+		state: {
+			...extras?.page_data,
+		},
 	});
 }
 

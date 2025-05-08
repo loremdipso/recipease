@@ -4,10 +4,13 @@
 	import { page } from "$app/state";
 	import "../app.scss";
 	import Footer from "$lib/views/Footer.svelte";
+	import type { IPageData } from "$lib/types";
 
 	const { children } = $props();
 	const page_id = $derived(page.route.id);
-	const going_back = $derived(Boolean((page.state as any)?.is_going_back));
+	const going_back = $derived(
+		Boolean((page.state as IPageData)?.is_going_back)
+	);
 	const duration = 500;
 </script>
 

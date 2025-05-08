@@ -8,6 +8,7 @@
 	let { title, back_path, extra_buttons, title_snippet } = $props<{
 		title?: string;
 		back_path?: string;
+		page_data?: { [key: string]: string | null };
 		extra_buttons?: Snippet;
 		title_snippet?: Snippet;
 	}>();
@@ -31,7 +32,8 @@
 			{#if back_path}
 				<button
 					class="shrink white-text flex-row vertically-centered p0 gap0_5"
-					onclick={() => goto(back_path, { is_going_back: true })}
+					onclick={() =>
+						goto(back_path, { page_data: { is_going_back: true } })}
 					title="Go back"
 					aria-label="Go back"
 				>

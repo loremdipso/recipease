@@ -118,7 +118,10 @@
 	});
 </script>
 
-<Toolbar back_path="/my-recipes">
+<Toolbar
+	back_path="/my-recipes"
+	page_data={{ previously_selected_recipe: url }}
+>
 	{#snippet title_snippet()}
 		<div class="flex-row vertically-centered grow">
 			<div class="grow flex-col">
@@ -133,7 +136,12 @@
 					<button
 						class="shrink white-text flex-row vertically-centered p0 gap0_5"
 						onclick={() =>
-							goto("/my-recipes", { is_going_back: true })}
+							goto("/my-recipes", {
+								page_data: {
+									is_going_back: true,
+									previously_selected_recipe: url,
+								},
+							})}
 						title="Go back"
 						aria-label="Go back"
 					>
@@ -354,7 +362,7 @@
 				if (recipe_to_delete) {
 					delete_recipe(get_all_recipes(), recipe_to_delete);
 					recipe_to_delete = null;
-					goto("/my-recipes", { is_going_back: true });
+					goto("/my-recipes", { page_data: { is_going_back: true } });
 				}
 			}}
 			cancel={() => {
