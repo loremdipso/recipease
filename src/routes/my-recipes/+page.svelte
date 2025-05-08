@@ -1,26 +1,21 @@
 <script lang="ts">
 	import { get_all_recipes, delete_recipe } from "$lib/data";
+	import TrashCanIcon from "$lib/icons/trash_can_icon.svelte";
 	import { get_url } from "$lib/utils";
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 	import Popup from "$lib/views/Popup.svelte";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 
-	let { current_url } = $props<{
-		current_url: string | null;
-		onBack(): void;
-		onOpenUrl(new_url: string): void;
-	}>();
-
 	let recipes = $state(get_all_recipes().reverse());
-
 	let recipe_to_delete = $state<string | null>(null);
+	let is_selected = true;
 </script>
 
 <Toolbar title="My Saved Recipes" back_path="/" />
 
 <main class="list">
 	{#each recipes as recipe}
-		<div class="flex-row">
+		<div class="flex-row" class:selected={is_selected}>
 			<a
 				class="grow vertically-centered p0_5"
 				href={get_url(`/recipe`, { url: recipe.url })}
@@ -29,13 +24,15 @@
 			</a>
 
 			<button
-				class="pink shrink"
+				class="shrink"
 				onclick={(event) => {
 					event.stopPropagation();
 					recipe_to_delete = recipe.url;
 				}}
+				title="Delete"
+				aria-label="Delete"
 			>
-				Delete
+				<TrashCanIcon />
 			</button>
 		</div>
 	{:else}
