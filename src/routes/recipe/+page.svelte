@@ -127,12 +127,20 @@
 						}}
 					/>
 				{:else}
-					<h1>{final_data?.title}</h1>
+					<button
+						class="shrink white-text flex-row vertically-centered p0 gap0_5"
+						onclick={() =>
+							goto("/my-recipes", { is_going_back: true })}
+						title="Go back"
+						aria-label="Go back"
+					>
+						<h1>{final_data?.title}</h1>
+					</button>
 				{/if}
 			</div>
 
 			<button
-				class="shrink"
+				class="shrink pl1"
 				title={title_to_edit ? "Save" : "Edit"}
 				aria-label={title_to_edit ? "Save" : "Edit"}
 				onclick={() => {

@@ -63,7 +63,7 @@
 	</div>
 
 	<div
-		class="flex-row grow shrink-children flex-start gap1 wrap extra-buttons pr1 no-print"
+		class="flex-row grow shrink-children flex-start gap1 wrap extra-buttons pr1 pl1 no-print"
 	>
 		{#if $installPrompt}
 			<button
