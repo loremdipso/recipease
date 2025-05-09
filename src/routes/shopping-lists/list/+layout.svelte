@@ -61,7 +61,7 @@
 
 {#snippet fancy_button(text: string, url: string, index: number)}
 	<button
-		class="blue rounded p0_5"
+		class="blue rounded p0_5 bold"
 		class:selected={page_id === url}
 		disabled={page_id === url}
 		onclick={() => {

@@ -416,6 +416,10 @@ input:not([type="checkbox"]) {
 	background: red !important;
 }
 
+.bold {
+	font-weight: bold !important;
+}
+
 @media print {
 	.no-print,
 	.no-print * {
