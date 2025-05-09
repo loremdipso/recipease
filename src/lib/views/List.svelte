@@ -119,27 +119,3 @@
 		{/each}
 	</div>
 </div>
-
-<style lang="scss">
-	.amount {
-		color: #00ff7c;
-	}
-
-	.temperature {
-		color: #ff7e7e;
-	}
-
-	.ingredient {
-		color: lightblue;
-		background: #6c0047;
-		padding: 0.2rem;
-		border-radius: 1rem;
-		white-space: nowrap;
-		cursor: pointer;
-		display: inline-block;
-	}
-
-	.ingredient.selected {
-		background: #006786 !important;
-	}
-</style>

@@ -49,6 +49,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		align-items: center;
 
 		&.transparent {
 			background: none;
@@ -61,5 +62,9 @@
 		padding: 0.5rem;
 		border-radius: 10px;
 		z-index: 10002;
+		max-height: 90vh;
+		max-width: 80vw;
+		overflow: scroll;
+		position: relative;
 	}
 </style>

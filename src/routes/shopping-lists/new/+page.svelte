@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { get_all_recipes } from "$lib/data";
+	import CloseIcon from "$lib/icons/close_icon.svelte";
 	import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
 	import MinusIcon from "$lib/icons/minus_icon.svelte";
 	import PlusIcon from "$lib/icons/plus_icon.svelte";
 	import type { IRecipe, IShoppingListItem } from "$lib/types";
+	import Overlay from "$lib/views/Overlay.svelte";
+	import RecipePreview from "$lib/views/RecipePreview.svelte";
 	import Stepper from "$lib/views/Stepper.svelte";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 
@@ -14,6 +17,8 @@
 
 	let recipe_map = $state<{ [key: string]: number }>({});
 	let shopping_list = $state<IShoppingListItem[]>([]);
+
+	let recipe_to_preview = $state<IRecipe | null>(null);
 
 	let name = $state("New shopping list");
 	let search_value = $state("");
@@ -54,7 +59,7 @@
 	}
 
 	function show_preview(recipe: IRecipe) {
-		// TODO
+		recipe_to_preview = recipe;
 	}
 
 	function save() {
@@ -150,3 +155,34 @@
 		</Stepper>
 	</div>
 </main>
+
+{#if recipe_to_preview}
+	<Overlay
+		click={() => {
+			recipe_to_preview = null;
+		}}
+	>
+		{#snippet content()}
+			<button
+				class="close-button"
+				onclick={(event) => {
+					event.stopPropagation();
+					recipe_to_preview = null;
+				}}
+				title="Close"
+				aria-label="Close"
+			>
+				<CloseIcon />
+			</button>
+			<RecipePreview recipe={recipe_to_preview} show_colors={true} />
+		{/snippet}
+	</Overlay>
+{/if}
+
+<style lang="scss">
+	.close-button {
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+</style>

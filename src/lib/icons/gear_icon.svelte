@@ -2,6 +2,7 @@
 	fill="#ffffff"
 	width="16px"
 	height="16px"
+	style="min-width: 16px"
 	xmlns="http://www.w3.org/2000/svg"
 	viewBox="0 0 45.973 45.973"
 	xml:space="preserve"
