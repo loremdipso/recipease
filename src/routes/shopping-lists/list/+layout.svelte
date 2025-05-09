@@ -9,6 +9,7 @@
 		goto,
 		is_number,
 	} from "$lib/utils";
+	import LinkButton from "$lib/views/LinkButton.svelte";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 	import { onMount } from "svelte";
 
@@ -58,16 +59,12 @@
 
 <Toolbar title="Shopping list" back_path="/shopping-lists">
 	{#snippet extra_buttons()}
-		<a class="button-like" href={get_url(`/`)}> Home</a>
-		<a
-			class="button-like"
-			href={get_url(`/shopping-lists`)}
-			onclick={() => {
-				go_back_to("/shopping-lists");
-			}}
-		>
-			Shopping Lists
-		</a>
+		<LinkButton text="Home" go_back={true} url="/" />
+		<LinkButton
+			text="Shopping Lists"
+			go_back={true}
+			url="/shopping-lists"
+		/>
 		<a class="button-like" href={get_url(`/my-recipes`)}>My Recipes</a>
 	{/snippet}
 </Toolbar>

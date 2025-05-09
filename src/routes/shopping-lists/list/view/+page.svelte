@@ -145,9 +145,13 @@
 								<div class="flex-row gap0_5 flex-end">
 									{#each ingredient.quantities as quantity}
 										<div class="blue rounded p0_5">
-											{quantity.recipe_count}
-											x
-											{quantity.ingredient_quantity}
+											{#if quantity.recipe_count > 1}
+												{quantity.recipe_count}
+												x
+												{quantity.ingredient_quantity}
+											{:else}
+												{quantity.ingredient_quantity}
+											{/if}
 										</div>
 									{/each}
 								</div>

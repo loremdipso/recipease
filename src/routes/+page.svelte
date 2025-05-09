@@ -15,7 +15,7 @@
 					id: $last_list_id.toString(),
 				})}
 			>
-				View most recent list
+				Current shopping list
 			</a>
 		{/if}
 		<a class="button-like" href={get_url(`/shopping-lists`)}>

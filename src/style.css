@@ -252,7 +252,7 @@ label.selected {
 	margin: 0.2rem;
 }
 
-.rounded-button.selected {
+.choice-button.selected {
 	color: black;
 	background: white;
 }

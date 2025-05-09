@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from "$app/state";
 	import { get_all_recipes, delete_recipe } from "$lib/data";
+	import { last_list_id } from "$lib/globals.svelte";
 	import TrashCanIcon from "$lib/icons/trash_can_icon.svelte";
 	import type { IPageData } from "$lib/types";
 	import { get_url } from "$lib/utils";
@@ -15,7 +16,23 @@
 	);
 </script>
 
-<Toolbar title="My Saved Recipes" back_path="/" />
+<Toolbar title="My Saved Recipes" back_path="/">
+	{#snippet extra_buttons()}
+		{#if $last_list_id !== null}
+			<a
+				class="button-like"
+				href={get_url(`/shopping-lists/list/view`, {
+					id: $last_list_id.toString(),
+				})}
+			>
+				Current shopping list
+			</a>
+		{/if}
+		<a class="button-like" href={get_url(`/shopping-lists`)}>
+			Shopping Lists
+		</a>
+	{/snippet}
+</Toolbar>
 
 <main>
 	<div class="list">

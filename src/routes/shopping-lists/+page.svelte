@@ -1,5 +1,6 @@
 <script>
 	import { delete_shopping_list, get_shopping_lists } from "$lib/data";
+	import { last_list_id } from "$lib/globals.svelte";
 	import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
 	import PencilIcon from "$lib/icons/pencil_icon.svelte";
 	import TrashCanIcon from "$lib/icons/trash_can_icon.svelte";
@@ -27,7 +28,10 @@
 	{#if lists.length}
 		<div class="list">
 			{#each lists as list}
-				<div class="flex-row vertically-centered gap1">
+				<div
+					class="flex-row vertically-centered gap1"
+					class:selected={$last_list_id === list.id}
+				>
 					<a
 						class="grow flex-row vertically-centered"
 						href={get_url(

@@ -4,17 +4,19 @@
 	import SlideCheck from "$lib/views/SlideCheck.svelte";
 	import { UNITS } from "$lib/constants";
 	import { data_to_markdown_string } from "$lib/renderers";
-	import { equals, get_query_url, goto } from "$lib/utils";
+	import { equals, get_query_url, get_url, goto } from "$lib/utils";
 	import {
 		delete_recipe,
 		fix_data,
 		get_all_recipes,
 		get_meta_sections,
+		get_shopping_lists,
+		save_shopping_lists,
 		try_load_url,
 		update_recipe,
 	} from "$lib/data";
 	import { get_preference, save_preference } from "$lib/preferences";
-	import { notify } from "$lib/globals.svelte";
+	import { last_list_id, notify } from "$lib/globals.svelte";
 	import { onMount } from "svelte";
 	import { set_wake_lock } from "$lib/wake_lock";
 	import { type IRecipe, type ISection } from "$lib/types";
@@ -29,6 +31,8 @@
 	import SaveIcon from "$lib/icons/save_icon.svelte";
 	import ReloadIcon from "$lib/icons/reload_icon.svelte";
 	import ShareIcon from "$lib/icons/share_icon.svelte";
+	import TrashCanIcon from "$lib/icons/trash_can_icon.svelte";
+	import LinkButton from "$lib/views/LinkButton.svelte";
 
 	let url = $state<string | null>(null);
 
@@ -116,6 +120,49 @@
 		title_to_edit = null;
 	}
 
+	let lists = $state(get_shopping_lists());
+	let exists_in_list = $derived(
+		Boolean(
+			lists
+				.find((list) => list.id === $last_list_id)
+				?.items.find((item) => item.recipe_url === url)
+		)
+	);
+	function add_recipe_to_list(list_id: number) {
+		let did_update = false;
+		for (let list of lists) {
+			if (list.id === list_id) {
+				for (let item of list.items) {
+					if (item.recipe_url === url) {
+						item.quantity += 1;
+						did_update = true;
+					}
+				}
+				if (!did_update) {
+					did_update = true;
+					list.items.push({
+						recipe_url: url!,
+						quantity: 1,
+					});
+				}
+			}
+		}
+
+		if (did_update) {
+			save_shopping_lists(lists);
+		}
+	}
+
+	function remove_recipe_from_list(list_id: number) {
+		for (let list of lists) {
+			if (list.id === list_id) {
+				list.items = list.items.filter((e) => e.recipe_url !== url);
+			}
+		}
+
+		save_shopping_lists(lists);
+	}
+
 	let should_keep_screen_awake = $state(get_preference("keep_screen_awake"));
 
 	// Set wake lock to true by default
@@ -183,6 +230,16 @@
 		</div>
 	{/snippet}
 	{#snippet extra_buttons()}
+		<LinkButton text="Home" go_back={true} url="/" />
+		{#if $last_list_id !== null}
+			<LinkButton
+				text="Current shopping list"
+				go_back={false}
+				url="/shopping-lists/list/view"
+				query_params={{ id: $last_list_id }}
+			/>
+		{/if}
+
 		{#if final_data && navigator.share}
 			<button
 				onclick={async () => {
@@ -307,21 +364,21 @@
 					<div class="flex-row gap1">
 						<div class="flex-row">
 							<button
-								class="rounded-button black"
+								class="choice-button black"
 								onclick={() => set_quantity(0.5)}
 								class:selected={equals(current_quantity, 0.5)}
 							>
 								0.5x
 							</button>
 							<button
-								class="rounded-button black"
+								class="choice-button black"
 								onclick={() => set_quantity(1.0)}
 								class:selected={equals(current_quantity, 1.0)}
 							>
 								1x
 							</button>
 							<button
-								class="rounded-button black"
+								class="choice-button black"
 								onclick={() => set_quantity(2.0)}
 								class:selected={equals(current_quantity, 2.0)}
 							>
@@ -332,21 +389,21 @@
 
 					<div class="flex-row">
 						<button
-							class="rounded-button black"
+							class="choice-button black"
 							onclick={() => set_units(UNITS.IMPERIAL)}
 							class:selected={current_units == UNITS.IMPERIAL}
 						>
 							Imperial
 						</button>
 						<button
-							class="rounded-button black"
+							class="choice-button black"
 							onclick={() => set_units(UNITS.ORIGINAL)}
 							class:selected={current_units == UNITS.ORIGINAL}
 						>
 							Original
 						</button>
 						<button
-							class="rounded-button black"
+							class="choice-button black"
 							onclick={() => set_units(UNITS.METRIC)}
 							class:selected={current_units == UNITS.METRIC}
 						>
@@ -355,6 +412,44 @@
 					</div>
 				</div>
 			</div>
+
+			{#if $last_list_id !== null}
+				<div class="flex-row gap1 flex-end">
+					{#if exists_in_list}
+						<!-- <div class="vertically-centered p1">
+							✅ Recipe is in current list
+						</div> -->
+
+						<button
+							class="rounded red shrink p1 flex-row vertically-centered gap0_5"
+							onclick={() => {
+								remove_recipe_from_list($last_list_id!);
+							}}
+						>
+							<TrashCanIcon />
+							Remove recipe from current list
+						</button>
+					{:else}
+						<button
+							class="rounded blue shrink p1"
+							onclick={() => {
+								add_recipe_to_list($last_list_id!);
+							}}
+						>
+							Add recipe to current list
+						</button>
+					{/if}
+
+					<!-- <button
+					class="rounded blue"
+					onclick={() => {
+						// TODO
+					}}
+				>
+					Add recipe to list
+				</button> -->
+				</div>
+			{/if}
 
 			{#each meta_sections as sections}
 				{#each sections as section}
