@@ -3,6 +3,11 @@ export interface IShoppingListItem {
 	quantity: number;
 }
 
+export interface IIngredient {
+	name: string;
+	quantity: number;
+}
+
 export interface IRecipe {
 	title: string;
 	url: string;
