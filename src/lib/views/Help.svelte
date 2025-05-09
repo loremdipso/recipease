@@ -3,7 +3,7 @@
 	import { get_url_from_clipboard, goto } from "$lib/utils";
 </script>
 
-<div class="flex-col gap1">
+<div class="flex-col gap1 mt1">
 	<div class="card">
 		<div class="flex-col gap1">
 			<h2>Welcome to RecipEase!</h2>
