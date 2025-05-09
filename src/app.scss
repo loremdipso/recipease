@@ -158,6 +158,10 @@ button:disabled {
 	color: #338356;
 }
 
+.grey-text {
+	color: grey;
+}
+
 .white-text {
 	color: white;
 }
@@ -257,26 +261,8 @@ button:disabled {
 	cursor: pointer;
 }
 
-.amount {
-	color: #00ff7c;
-}
-
-.temperature {
-	color: #ff7e7e;
-}
-
-.ingredient {
-	color: lightblue;
-	background: #6c0047;
-	padding: 0.2rem;
-	border-radius: 1rem;
-	white-space: nowrap;
-	cursor: pointer;
-	display: inline-block;
-}
-
-.ingredient.selected {
-	background: #006786 !important;
+button.selected {
+	color: lightgreen;
 }
 
 label {
@@ -303,30 +289,6 @@ label.selected {
 .failed,
 .unknown {
 	background-color: red;
-}
-
-.notifications {
-	position: fixed;
-	width: 80%;
-	bottom: 1rem;
-	display: flex;
-	flex-direction: column-reverse;
-	left: 10%;
-	gap: 1rem;
-}
-
-.notification {
-	background: #1c2257;
-	padding: 1rem;
-	border-radius: 2rem;
-}
-
-.notification.error {
-	background: #fa8072;
-}
-
-.notification.success {
-	background: #338356;
 }
 
 .fade-out {
@@ -412,6 +374,11 @@ hr {
 
 .pl1 {
 	padding-left: 1rem;
+}
+
+input:not([type="checkbox"]) {
+	color: black !important;
+	background-color: white !important;
 }
 
 @media print {

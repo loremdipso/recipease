@@ -1,11 +1,12 @@
-<script lang="ts">
+<script>
+	import { get_url } from "$lib/utils";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 </script>
 
-<Toolbar title="Shopping lists" back_path="/"></Toolbar>
+<Toolbar title="Shopping lists" back_path="/" />
 
 <main>
 	<div class="card">
-		<p>TODO</p>
+		<a href={get_url("/shopping-lists/new")}>Create new</a>
 	</div>
 </main>

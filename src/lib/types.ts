@@ -1,3 +1,8 @@
+export interface IShoppingListItem {
+	recipe: IRecipe;
+	quantity: number;
+}
+
 export interface IRecipe {
 	title: string;
 	url: string;

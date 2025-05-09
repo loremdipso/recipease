@@ -1,5 +1,5 @@
 <script lang="ts">
-	import CopyIcon from "$lib/icons/copy_icon.svelte";
+	import PlusIcon from "$lib/icons/plus_icon.svelte";
 	import { get_url_from_clipboard, goto } from "$lib/utils";
 </script>
 
@@ -14,7 +14,7 @@
 	title="Copy recipe url from clipboard"
 	aria-label="Copy recipe url from clipboard"
 >
-	<CopyIcon />
+	<PlusIcon />
 </button>
 
 <style lang="scss">
