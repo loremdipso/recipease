@@ -14,27 +14,17 @@
 	const going_back = $derived(
 		Boolean((page.state as IPageData)?.is_going_back)
 	);
-	const duration = 500;
+	const duration = $derived(skip_animation ? 0 : 500);
 </script>
 
 {#key page_id}
-	{#if skip_animation}
-		<div
-			in:fly={{ x: going_back ? "-100%" : "100%", duration }}
-			out:fly={{ x: going_back ? "100%" : "-100%", duration }}
-			class="transition-container"
-		>
-			{@render children()}
-		</div>
-	{:else}
-		<div
-			in:fly={{ x: going_back ? "-100%" : "100%", duration }}
-			out:fly={{ x: going_back ? "100%" : "-100%", duration }}
-			class="transition-container"
-		>
-			{@render children()}
-		</div>
-	{/if}
+	<div
+		in:fly={{ x: going_back ? "-100%" : "100%", duration }}
+		out:fly={{ x: going_back ? "100%" : "-100%", duration }}
+		class="transition-container"
+	>
+		{@render children()}
+	</div>
 {/key}
 
 <Notifications />
