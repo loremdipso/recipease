@@ -5,6 +5,8 @@ set -e
 # Change to the parent directory
 cd "${0%/*}/.."
 
-convert -background '#e9afaf' favicon.svg -resize 512x512 ./static/favicon-512x512.png
-convert -background '#e9afaf' favicon.svg -resize 192x192 ./static/favicon-192x192.png
+# convert -background '#e9afaf' favicon.svg -resize 512x512 ./static/favicon-512x512.png
+# convert -background '#e9afaf' favicon.svg -resize 192x192 ./static/favicon-192x192.png
+convert -background none favicon.svg -resize 512x512 ./static/favicon-512x512.png
+convert -background none favicon.svg -resize 192x192 ./static/favicon-192x192.png
 convert -background none favicon.svg -resize 64x64 ./static/favicon.png
