@@ -1,1 +1,0 @@
-import{t as r,a as p}from"../chunks/BdzHppB0.js";import"../chunks/Bl9yS9p1.js";import{f as i,n as m}from"../chunks/DfCMG9Db.js";import{T as n}from"../chunks/BCSNVe9H.js";var s=r('<!> <main><div class="card"><p>TODO</p></div></main>',1);function l(t){var a=s(),o=i(a);n(o,{title:"Shopping lists",back_path:"/"}),m(2),p(t,a)}export{l as component};
