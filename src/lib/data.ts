@@ -205,6 +205,7 @@ export function get_sections(
 		sections.push(current_section);
 
 		for (let item of list) {
+			let original = item;
 			if (item.startsWith(LI_PREFIX)) {
 				item = item.substr(LI_PREFIX.length);
 			} else if (item.startsWith(SUB_HEADER_PREFIX)) {
@@ -231,6 +232,7 @@ export function get_sections(
 			}
 
 			current_section.rows.push({
+				original,
 				fragments: split_text(item, keywords, show_colors),
 				id: generate_unique_id("row"),
 			});

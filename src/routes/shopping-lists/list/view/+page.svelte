@@ -1,5 +1,11 @@
 <script lang="ts">
 	import { afterNavigate } from "$app/navigation";
+	import { UNITS } from "$lib/constants";
+	import {
+		convert_to_value,
+		pluralize_value,
+		try_convert,
+	} from "$lib/converters";
 	import {
 		find_recipe_by_url,
 		get_all_recipes,
@@ -9,19 +15,26 @@
 	import CloseIcon from "$lib/icons/close_icon.svelte";
 	import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
 	import { get_ingredients } from "$lib/parser";
-	import type { IIngredient, IRecipe, IShoppingList } from "$lib/types";
+	import type {
+		IIngredient,
+		IParseError,
+		IQuantity,
+		IRecipe,
+		IShoppingList,
+	} from "$lib/types";
 	import { get_query_param, is_number } from "$lib/utils";
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 	import Collapsible from "$lib/views/Collapsible.svelte";
 	import Overlay from "$lib/views/Overlay.svelte";
 	import RecipePreview from "$lib/views/RecipePreview.svelte";
+	import SlideCheck from "$lib/views/SlideCheck.svelte";
 	import { onMount } from "svelte";
 
 	let shopping_list = $state<IShoppingList | null>(null);
 
 	let all_recipes = $state(get_all_recipes().reverse());
 	let data = $derived<{
-		errors: string[];
+		errors: IParseError[];
 		ingredients: IIngredient[];
 	}>(
 		shopping_list
@@ -57,7 +70,61 @@
 		}
 	}
 
+	function guesstimate(quantities: IQuantity[]): number | string {
+		let values = [];
+		for (let quantity of quantities) {
+			let result = try_convert(quantity.ingredient_quantity);
+			if (result) {
+				let value = convert_to_value(
+					result.def,
+					result.value,
+					UNITS.IMPERIAL,
+					quantity.recipe_count
+				);
+				if (value) {
+					values.push(value);
+				} else {
+					return "ERROR";
+				}
+			} else {
+				return "ERROR";
+			}
+		}
+
+		let total = 0;
+		let def = null;
+		for (let value of values) {
+			if (def && value.def !== def) {
+				return "ERROR";
+			}
+			def = value.def;
+			total += value.value;
+		}
+		// TODO: make sure the units all match up
+		if (def) {
+			if (!isNaN(total)) {
+				return pluralize_value(total, def);
+			}
+		}
+
+		return "ERROR";
+	}
+
+	function show_recipe_from_url(
+		recipe_url: string,
+		some_line_to_focus?: string
+	) {
+		let recipe = find_recipe_by_url(recipe_url, all_recipes);
+		if (recipe) {
+			recipe_to_preview = recipe;
+			line_to_focus = some_line_to_focus;
+		}
+	}
+
+	let show_details = $state(false);
 	let recipe_to_preview = $state<IRecipe | null>(null);
+	let line_to_focus = $state<string | undefined>(undefined);
+	let original_line_to_show = $state<string | null>(null);
 </script>
 
 <main>
@@ -74,13 +141,7 @@
 									class="flex-row vertically-centered"
 									onclick={(event) => {
 										event.stopPropagation();
-										let recipe = find_recipe_by_url(
-											item.recipe_url,
-											all_recipes
-										);
-										if (recipe) {
-											recipe_to_preview = recipe;
-										}
+										show_recipe_from_url(item.recipe_url);
 									}}
 								>
 									<div
@@ -108,6 +169,16 @@
 			</Collapsible>
 
 			<div class="card">
+				<SlideCheck
+					text="Show details"
+					checked={show_details}
+					onchange={(checked) => {
+						show_details = checked;
+					}}
+				/>
+			</div>
+
+			<div class="card">
 				<div class="flex-row vertically-centered">
 					<h2 class="grow">Checklist</h2>
 					{#if data.ingredients.length || data.errors.length}
@@ -126,7 +197,35 @@
 
 				<div class="list">
 					{#each data.errors as error}
-						<div class="error">BAD ROW: {error}</div>
+						<label class="selectable">
+							<input
+								type="checkbox"
+								checked={shopping_list.checkedItems[error.text]}
+								onchange={(e) => {
+									if (shopping_list) {
+										shopping_list.checkedItems[error.text] =
+											(e.target! as any).checked;
+									}
+								}}
+							/>
+							<div class="flex-row vertically-centered grow">
+								<span class="grow">
+									{error.text.replaceAll("**", "")}
+								</span>
+
+								<button
+									class="shrink"
+									onclick={() => {
+										show_recipe_from_url(
+											error.recipe_url,
+											error.text
+										);
+									}}
+								>
+									???
+								</button>
+							</div>
+						</label>
 					{/each}
 
 					{#each data.ingredients as ingredient}
@@ -146,22 +245,38 @@
 							/>
 
 							<div class="flex-col grow">
-								<h2>
-									{ingredient.name}
-								</h2>
+								<div class="flex-row grow">
+									<h2 class="grow">
+										{ingredient.name}
+									</h2>
+									<div>
+										{guesstimate(ingredient.quantities)}
+									</div>
+								</div>
 
 								<div class="flex-row gap0_5 flex-end">
-									{#each ingredient.quantities as quantity}
-										<div class="blue rounded p0_5">
-											{#if quantity.recipe_count > 1}
-												{quantity.recipe_count}
-												x
-												{quantity.ingredient_quantity}
-											{:else}
-												{quantity.ingredient_quantity}
-											{/if}
-										</div>
-									{/each}
+									{#if show_details}
+										{#each ingredient.quantities as quantity}
+											<button
+												class="blue rounded p0_5 shrink flex-row vertically-centered gap0_5"
+												onclick={() => {
+													original_line_to_show =
+														quantity.original_line;
+												}}
+												title="See original line"
+												aria-label="See original line"
+											>
+												<MagnifyingGlass />
+												{#if quantity.recipe_count > 1}
+													{quantity.recipe_count}
+													x
+													{quantity.ingredient_quantity}
+												{:else}
+													{quantity.ingredient_quantity}
+												{/if}
+											</button>
+										{/each}
+									{/if}
 								</div>
 							</div>
 						</label>
@@ -198,7 +313,23 @@
 			>
 				<CloseIcon />
 			</button>
-			<RecipePreview recipe={recipe_to_preview} show_colors={true} />
+			<RecipePreview
+				recipe={recipe_to_preview}
+				{line_to_focus}
+				show_colors={true}
+			/>
+		{/snippet}
+	</Overlay>
+{/if}
+
+{#if original_line_to_show}
+	<Overlay
+		click={() => {
+			original_line_to_show = null;
+		}}
+	>
+		{#snippet content()}
+			{original_line_to_show}
 		{/snippet}
 	</Overlay>
 {/if}

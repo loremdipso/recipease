@@ -10,6 +10,7 @@ import { extract_keywords } from "./keywords";
 import {
 	FragmentType,
 	type IIngredient,
+	type IParseError,
 	type IQuantity,
 	type IRecipe,
 	type IShoppingList,
@@ -217,18 +218,23 @@ function get_text_from_element(element: any): string {
 export function get_ingredients(
 	shopping_list: IShoppingList,
 	recipes: IRecipe[]
-): { ingredients: IIngredient[]; errors: string[] } {
+): { ingredients: IIngredient[]; errors: IParseError[] } {
 	let mapping: { [key: string]: IQuantity[] } = {};
-	let errors = [];
+	let errors: IParseError[] = [];
 	for (let item of shopping_list.items) {
 		// TODO: is this clone necessary?
+		let original_recipe = find_recipe_by_url(item.recipe_url, recipes);
 		let recipe = structuredClone(
 			find_recipe_by_url(item.recipe_url, recipes)
 		);
 
-		if (recipe) {
+		if (original_recipe && recipe) {
 			let keywords = extract_keywords(recipe);
-			for (let row of recipe.ingredients) {
+			for (let i = 0; i < recipe.ingredients.length; i++) {
+				let row = recipe.ingredients[i];
+				if (row.startsWith("#")) {
+					continue;
+				}
 				let ingredient: string | null = null;
 				let quantity: string | null = null;
 				let error = false;
@@ -263,7 +269,11 @@ export function get_ingredients(
 				}
 
 				if (error || !ingredient || !quantity) {
-					errors.push(row);
+					errors.push({
+						text: row,
+						line_number: i,
+						recipe_url: recipe.url,
+					});
 				} else {
 					let key = ingredient;
 					if (!mapping[key]) {
@@ -273,6 +283,10 @@ export function get_ingredients(
 					mapping[key].push({
 						recipe_count: item.quantity,
 						ingredient_quantity: quantity,
+						original_line: original_recipe.ingredients[i].replace(
+							/^\s*-/,
+							""
+						),
 					});
 				}
 			}

@@ -1,4 +1,5 @@
-import { UNITS } from "./constants";
+// TODO: why did I need to copy this??
+// import { UNITS } from "./constants";
 import { fix_regex, round, equals, is_number } from "./utils";
 
 interface IDef {
@@ -13,6 +14,13 @@ interface IDef {
 	converters?: {
 		[key: string]: (value: number) => string | number;
 	};
+}
+
+enum UNITS {
+	IMPERIAL = "imperial",
+	ORIGINAL = "original",
+	METRIC = "metric",
+	ANY = "any",
 }
 
 export const defs: { [key: string]: IDef } = {
@@ -196,6 +204,53 @@ export function convert(
 	return `${new_value} ${def.plural}`;
 }
 
+export function convert_to_value(
+	def: IDef,
+	value: number,
+	units: string,
+	quantity: number
+): { value: number; def: IDef } | null {
+	if (def.alias) {
+		def = defs[def.alias];
+	}
+
+	let new_value: string | number = value * quantity;
+	if (def.ignore_scale) {
+		new_value = value;
+	}
+
+	if (
+		!(units === UNITS.ANY || units === UNITS.ORIGINAL) &&
+		units !== def.unit
+	) {
+		if (def.converters) {
+			let converter_key = Object.keys(def.converters)[0];
+			new_value = def.converters[converter_key](new_value);
+			def = defs[converter_key];
+		} else {
+			return null;
+		}
+	}
+
+	// TODO: is this conversion correct?
+	return { value: Number(new_value), def };
+}
+
+export function pluralize_value(value: number, def: IDef): string {
+	let new_value = round(value, 2, true);
+	if (!def.plural || typeof new_value === "string" || new_value <= 1.1) {
+		if (def.join) {
+			return `${new_value}${def.singular}`;
+		}
+		return `${new_value} ${def.singular}`;
+	}
+
+	if (def.join) {
+		return `${new_value}${def.plural}`;
+	}
+	return `${new_value} ${def.plural}`;
+}
+
 export function try_convert_and_resize(
 	text: string,
 	quantity: number,
@@ -217,25 +272,6 @@ export function try_convert_and_resize(
 			}
 		}
 	}
-
-	let fix_match = (match: string): string | number => {
-		match = match.trim();
-		if (is_number(match)) {
-			return Number(match);
-		}
-
-		let matches = match.match(/^([0-9]+)\/([0-9]+)$/);
-		if (matches) {
-			return Number(matches[1]) / Number(matches[2]);
-		}
-
-		matches = match.match(/^([0-9])\s([0-9]+)\/([0-9]+)$/);
-		if (matches) {
-			return Number(matches[1]) + Number(matches[2]) / Number(matches[3]);
-		}
-
-		return NaN;
-	};
 
 	text = text.replace(/ and /, " ");
 
@@ -299,6 +335,97 @@ export function try_convert_and_resize(
 			if (final_value) {
 				return final_value;
 			}
+		}
+	}
+
+	return null;
+}
+
+function fix_match(match: string): string | number {
+	match = match.trim();
+	if (is_number(match)) {
+		return Number(match);
+	}
+
+	let matches = match.match(/^([0-9]+)\/([0-9]+)$/);
+	if (matches) {
+		return Number(matches[1]) / Number(matches[2]);
+	}
+
+	matches = match.match(/^([0-9])\s([0-9]+)\/([0-9]+)$/);
+	if (matches) {
+		return Number(matches[1]) + Number(matches[2]) / Number(matches[3]);
+	}
+
+	return NaN;
+}
+
+// TODO: dedup
+export function try_convert(text: string): { def: IDef; value: number } | null {
+	for (let def of Object.values(defs)) {
+		if (def.regex.exec(text) != null) {
+			if (def.skip) {
+				return null;
+			}
+		}
+	}
+
+	text = text.replace(/ and /, " ");
+
+	let matches: any = text.match(
+		new RegExp(
+			fix_regex(
+				String.raw`
+					// Number and space prefix
+					(?:[0-9]+ )?
+
+					// Decimal prefix
+					(?:\.[0-9]+)*
+
+					// Some number
+					[0-9]+
+
+					// number-[other number]
+					(?:\s*[\/-]\s*[0-9]+)*
+
+					// number and [other number]
+					(?: and [0-9]+)?
+
+					(?:\/[0-9]+)*
+
+					// Decimal suffix
+					(?:\.[0-9]+)*`
+			),
+			"gi"
+		)
+	);
+
+	if (matches == null) {
+		return null;
+	}
+
+	let original = text;
+	for (let i = 0; i < matches.length; i++) {
+		let match = matches[i];
+		matches[i] = fix_match(match);
+		text = text.replace(match, "").trim();
+	}
+
+	let value = matches.reduce(
+		(acc: any, match: any) => acc + match,
+		0
+	) as number;
+	if (value < 0 || isNaN(value)) {
+		return null;
+	}
+
+	for (let def of Object.values(defs)) {
+		if (def.regex.exec(text) != null) {
+			return { value, def };
+			// let final_value = convert(def, value, units, quantity);
+			// if (final_value) {
+			// 	return final_value;
+			// }
 		}
 	}
 

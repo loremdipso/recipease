@@ -1,13 +1,9 @@
 <script lang="ts">
-	import {
-		FragmentType,
-		type IFragment,
-		type IRow,
-		type ISection,
-	} from "$lib/types";
+	import { FragmentType, type IFragment, type ISection } from "$lib/types";
 
-	let { section } = $props<{
+	let { section, line_to_focus } = $props<{
 		section: ISection;
+		line_to_focus?: number;
 	}>();
 
 	function get_class(fragment: IFragment): string {
@@ -36,8 +32,8 @@
 	</header>
 
 	<div class="list">
-		{#each section.rows as row}
-			<div>
+		{#each section.rows as row, i}
+			<div class:selected={row.original === line_to_focus}>
 				<div>
 					{#each row.fragments as fragment}
 						{#if fragment.type === FragmentType.Plain}

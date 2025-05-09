@@ -1,3 +1,9 @@
+export interface IParseError {
+	text: string;
+	recipe_url: string;
+	line_number: number;
+}
+
 export interface IShoppingList {
 	id: number;
 	name: string;
@@ -18,6 +24,7 @@ export interface IIngredient {
 export interface IQuantity {
 	recipe_count: number;
 	ingredient_quantity: string;
+	original_line: string;
 }
 
 export interface IRecipe {
@@ -52,6 +59,7 @@ export interface ISection {
 export interface IRow {
 	id: string;
 	fragments: IFragment[];
+	original: string;
 }
 
 export interface IFragment {

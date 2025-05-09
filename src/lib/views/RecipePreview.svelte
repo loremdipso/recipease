@@ -4,8 +4,9 @@
 	import type { IRecipe, ISection } from "$lib/types";
 	import PreviewList from "./PreviewList.svelte";
 
-	let { recipe, show_colors } = $props<{
+	let { recipe, line_to_focus, show_colors } = $props<{
 		recipe: IRecipe | null;
+		line_to_focus?: string;
 		show_colors: boolean;
 	}>();
 
@@ -23,6 +24,10 @@
 	);
 </script>
 
+<h2>
+	{recipe?.title}
+</h2>
+
 <div class="flex-col gap1">
 	{#each meta_sections as sections}
 		{#each sections as section}
@@ -32,5 +37,5 @@
 </div>
 
 {#snippet render_section(section: ISection)}
-	<PreviewList {section} />
+	<PreviewList {section} {line_to_focus} />
 {/snippet}
