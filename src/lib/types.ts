@@ -69,6 +69,6 @@ export interface IPreferences {
 
 export interface IPageData {
 	is_going_back?: boolean;
-	skip_animation?: boolean;
+	custom_duration?: number;
 	previously_selected_recipe?: string | null;
 }

@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { afterNavigate } from "$app/navigation";
 	import { page } from "$app/state";
+	import { previous_page_id } from "$lib/globals.svelte";
 	import { get_query_param, get_url, goto, is_number } from "$lib/utils";
 	import Toolbar from "$lib/views/Toolbar.svelte";
-	import { onMount } from "svelte";
+	import { onDestroy, onMount } from "svelte";
 
 	const { children } = $props();
 
@@ -28,8 +29,10 @@
 		links.findIndex((link) => link.url === page_id)
 	);
 
+	let mounted = $state(false);
 	onMount(() => {
 		try_load();
+		mounted = true;
 	});
 
 	afterNavigate(() => {
@@ -61,14 +64,14 @@
 
 {#snippet fancy_button(text: string, url: string, index: number)}
 	<button
-		class="blue rounded p0_5 bold"
-		class:selected={page_id === url}
+		class="blue rounded p0_5 bold with-fade"
+		class:selected={mounted ? page_id === url : $previous_page_id === url}
 		disabled={page_id === url}
 		onclick={() => {
 			goto(url, {
 				page_data: {
 					is_going_back: index < current_index,
-					skip_animation: true,
+					custom_duration: 0,
 				},
 				query_params: { id: list_id },
 			});
@@ -77,3 +80,9 @@
 		{text}
 	</button>
 {/snippet}
+
+<style lang="scss">
+	.with-fade {
+		transition: background-color 300ms;
+	}
+</style>

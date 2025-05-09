@@ -5,16 +5,25 @@
 	import "../app.scss";
 	import Footer from "$lib/views/Footer.svelte";
 	import type { IPageData } from "$lib/types";
+	import { previous_page_id } from "$lib/globals.svelte";
+	import { beforeNavigate } from "$app/navigation";
 
 	const { children } = $props();
 	const page_id = $derived(page.route.id);
-	const skip_animation = $derived(
-		Boolean((page.state as IPageData)?.skip_animation)
+	const custom_duration = $derived(
+		(page.state as IPageData)?.custom_duration
 	);
 	const going_back = $derived(
 		Boolean((page.state as IPageData)?.is_going_back)
 	);
-	const duration = $derived(skip_animation ? 0 : 500);
+	const duration = $derived(
+		custom_duration !== undefined ? Number(custom_duration) : 500
+	);
+
+	// Hack to get around sveltekit rerendering junk unnecessarily.
+	beforeNavigate((event) => {
+		previous_page_id.set(event.from?.route.id || null);
+	});
 </script>
 
 {#key page_id}

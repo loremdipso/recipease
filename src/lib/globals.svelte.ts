@@ -34,3 +34,5 @@ window.addEventListener("beforeinstallprompt", (event) => {
 	event.preventDefault();
 	installPrompt.set(event);
 });
+
+export const previous_page_id = writable<string | null>(null);
