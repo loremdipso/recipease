@@ -34,9 +34,15 @@
 	}
 </script>
 
-<div class="flex-row vertically-centered">
+<div class="flex-row vertically-centered p1">
 	{#each { length: num_steps }, i}
-		<button class:selected={i === current_step}>
+		<button
+			class:selected={i === current_step}
+			class="blue rounded"
+			onclick={() => {
+				current_step = i;
+			}}
+		>
 			{@render title(i)}
 		</button>
 		{#if i < num_steps - 1}
@@ -59,29 +65,11 @@
 			{@render step5()}
 		{/if}
 	</div>
-
-	<hr class="m1" />
-
-	<div class="flex-row flex-end">
-		<div class="flex-row gap1">
-			{#if current_step > 0}
-				<button class="p1" onclick={back}>Previous</button>
-			{/if}
-
-			{#if current_step < num_steps - 1}
-				<button class="p1" onclick={forward}>Next</button>
-			{/if}
-
-			{#if current_step === num_steps - 1}
-				<button class="p1" onclick={finish}>Finish</button>
-			{/if}
-		</div>
-	</div>
 {/if}
 
 <style lang="scss">
 	.step-contents {
-		height: 60vh;
+		height: 75vh;
 		overflow-y: scroll;
 	}
 </style>

@@ -5,9 +5,7 @@ const prefix = "recipease_";
 export enum KEYS {
 	PREFERENCES = `${prefix}preferences`,
 	RECIPES = "recipes",
-
 	SHOPPING_LISTS = `${prefix}shopping_lists`,
-	SHOPPING_LIST_IN_PROGRESS = `${prefix}shopping_list_in_progress`,
 }
 
 export enum UNITS {

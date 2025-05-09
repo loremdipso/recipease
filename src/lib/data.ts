@@ -267,27 +267,6 @@ export function get_sections(
 	return sections;
 }
 
-export function get_temp_list(): IShoppingList | null {
-	try {
-		let value = localStorage.getItem(KEYS.SHOPPING_LIST_IN_PROGRESS);
-		if (value) {
-			return JSON.parse(value);
-		}
-	} catch (e) {
-		console.error(e);
-	}
-
-	return null;
-}
-
-export function save_temp_list(list: IShoppingList) {
-	localStorage.setItem(KEYS.SHOPPING_LIST_IN_PROGRESS, JSON.stringify(list));
-}
-
-export function delete_temp_list(list: IShoppingList) {
-	localStorage.removeItem(KEYS.SHOPPING_LIST_IN_PROGRESS);
-}
-
 export function get_shopping_list(id: number): IShoppingList | null {
 	let lists = get_shopping_lists();
 	for (let list of lists) {
@@ -309,6 +288,17 @@ export function get_shopping_lists(): IShoppingList[] {
 	}
 
 	return [];
+}
+
+export function update_shopping_list(list_to_update: IShoppingList) {
+	let lists = get_shopping_lists();
+	for (let i = 0; i < lists.length; i++) {
+		if (lists[i].id === list_to_update.id) {
+			lists[i] = list_to_update;
+			break;
+		}
+	}
+	save_shopping_lists(lists);
 }
 
 // Returns the id of the new list
