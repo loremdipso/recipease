@@ -28,6 +28,7 @@ body {
 main {
 	overflow-y: scroll;
 	margin-top: 1rem;
+	padding-bottom: 5rem;
 }
 
 main > :not(.full-width) {
@@ -66,6 +67,7 @@ button:hover {
 
 button:disabled {
 	font-weight: normal;
+	cursor: initial;
 }
 
 .flex-row {
@@ -261,6 +263,7 @@ button:disabled {
 	cursor: pointer;
 }
 
+a.selected,
 button.selected {
 	background-color: lightgreen;
 	color: black;

@@ -71,9 +71,10 @@
 			{@render extra_buttons()}
 		{/if}
 
-		<div class="vertically-centered">
+		<!-- TODO: put this back -->
+		<!-- <div class="vertically-centered">
 			<PreferencesButton />
-		</div>
+		</div> -->
 	</div>
 </nav>
 

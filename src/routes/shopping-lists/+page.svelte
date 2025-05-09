@@ -1,7 +1,8 @@
 <script>
 	import { delete_shopping_list, get_shopping_lists } from "$lib/data";
+	import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
 	import TrashCanIcon from "$lib/icons/trash_can_icon.svelte";
-	import { get_url, goto } from "$lib/utils";
+	import { get_url, go_forward_to } from "$lib/utils";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 
 	let lists = $state(get_shopping_lists());
@@ -11,10 +12,14 @@
 
 <main class="flex-col gap1">
 	<div class="card">
-		<a
+		<button
 			class="green full-width p0_5 center rounded"
-			href={get_url("/shopping-lists/list?id=-1")}>Create new list</a
+			onclick={() => {
+				go_forward_to("/shopping-lists/list/edit", { id: "-1" });
+			}}
 		>
+			Create new list
+		</button>
 	</div>
 
 	{#if lists.length}
@@ -23,9 +28,19 @@
 				<div class="flex-row">
 					<a
 						class="grow"
-						href={get_url(`/shopping-lists/list?id=${list.id}`)}
+						href={get_url(
+							`/shopping-lists/list/edit?id=${list.id}`
+						)}
 					>
 						{list.name}
+					</a>
+					<a
+						class="vertically-centered"
+						href={get_url(
+							`/shopping-lists/list/view?id=${list.id}`
+						)}
+					>
+						<MagnifyingGlass />
 					</a>
 					<button
 						class="shrink"

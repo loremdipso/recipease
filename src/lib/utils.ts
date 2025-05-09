@@ -1,6 +1,6 @@
 import { notify } from "./globals.svelte";
 import type { IPageData, Keywords } from "./types";
-import { goto as native_goto } from "$app/navigation";
+import { goto as native_goto, replaceState } from "$app/navigation";
 import { base } from "$app/paths";
 
 export function remove_markdown(text: string): string {
@@ -118,6 +118,12 @@ export function get_query_param(param_name: string): string | null {
 	return url_obj.searchParams.get(param_name);
 }
 
+export function set_query_param(param_name: string, value: string) {
+	const url = new URL(window.location.href);
+	url.searchParams.set(param_name, value);
+	replaceState(url.toString(), {});
+}
+
 export function get_query_url(): string | null {
 	// TODO: what do about this?
 	// decodeURIComponent(url.searchParams.get("name") || "")
@@ -150,11 +156,29 @@ export async function get_url_from_clipboard(): Promise<string | undefined> {
 	notify("Didn't find a recipe url in your clipboard. Sorry bud :/");
 }
 
+export async function go_back_to(
+	url: string,
+	query_params?: { [key: string]: any }
+) {
+	await native_goto(get_url(url, query_params), {
+		state: {
+			is_going_back: true,
+		},
+	});
+}
+
+export async function go_forward_to(
+	url: string,
+	query_params?: { [key: string]: string }
+) {
+	await native_goto(get_url(url, query_params), {});
+}
+
 export async function goto(
 	url: string,
 	extras?: {
 		page_data?: IPageData;
-		query_params?: { [key: string]: string };
+		query_params?: { [key: string]: any };
 	}
 ) {
 	await native_goto(get_url(url, extras?.query_params), {

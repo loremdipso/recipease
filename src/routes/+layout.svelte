@@ -8,6 +8,9 @@
 
 	const { children } = $props();
 	const page_id = $derived(page.route.id);
+	const skip_animation = $derived(
+		Boolean((page.state as IPageData)?.skip_animation)
+	);
 	const going_back = $derived(
 		Boolean((page.state as IPageData)?.is_going_back)
 	);
@@ -15,13 +18,23 @@
 </script>
 
 {#key page_id}
-	<div
-		in:fly={{ x: going_back ? "-100%" : "100%", duration }}
-		out:fly={{ x: going_back ? "100%" : "-100%", duration }}
-		class="transition-container"
-	>
-		{@render children()}
-	</div>
+	{#if skip_animation}
+		<div
+			in:fly={{ x: going_back ? "-100%" : "100%", duration }}
+			out:fly={{ x: going_back ? "100%" : "-100%", duration }}
+			class="transition-container"
+		>
+			{@render children()}
+		</div>
+	{:else}
+		<div
+			in:fly={{ x: going_back ? "-100%" : "100%", duration }}
+			out:fly={{ x: going_back ? "100%" : "-100%", duration }}
+			class="transition-container"
+		>
+			{@render children()}
+		</div>
+	{/if}
 {/key}
 
 <Notifications />

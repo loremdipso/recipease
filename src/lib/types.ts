@@ -2,6 +2,7 @@ export interface IShoppingList {
 	id: number;
 	name: string;
 	items: IShoppingListItem[];
+	checkedItems: { [key: string]: boolean };
 }
 
 export interface IShoppingListItem {
@@ -63,5 +64,6 @@ export interface IPreferences {
 
 export interface IPageData {
 	is_going_back?: boolean;
+	skip_animation?: boolean;
 	previously_selected_recipe?: string | null;
 }
