@@ -250,7 +250,11 @@
 										{ingredient.name}
 									</h2>
 									<div>
-										{guesstimate(ingredient.quantities)}
+										{#if guesstimate(ingredient.quantities) !== "ERROR"}
+											{guesstimate(ingredient.quantities)}
+										{:else}
+											ho
+										{/if}
 									</div>
 								</div>
 

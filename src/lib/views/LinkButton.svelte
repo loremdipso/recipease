@@ -12,7 +12,9 @@
 <a
 	class="button-like"
 	href={get_url(url)}
-	onclick={() => {
+	onclick={(event) => {
+		event.stopPropagation();
+		event.preventDefault();
 		if (go_back) {
 			go_back_to(url, query_params);
 		} else {
