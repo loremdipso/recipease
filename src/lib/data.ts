@@ -41,8 +41,14 @@ export function save_recipes(recipes: IRecipe[]) {
 	localStorage.setItem(KEYS.RECIPES, JSON.stringify(recipes));
 }
 
-export function find_recipe_by_url(url: string): IRecipe | null {
-	let recipes = get_all_recipes();
+export function find_recipe_by_url(
+	url: string,
+	recipes: IRecipe[] | null = null
+): IRecipe | null {
+	if (!recipes) {
+		recipes = get_all_recipes();
+	}
+
 	for (let recipe of recipes) {
 		if (recipe.url === url) {
 			return recipe;

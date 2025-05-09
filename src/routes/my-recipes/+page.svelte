@@ -49,8 +49,6 @@
 		{/each}
 	</div>
 
-	<AddRecipeFloater />
-
 	{#if recipe_to_delete}
 		<Popup
 			text="Are you sure?"
@@ -66,3 +64,5 @@
 		/>
 	{/if}
 </main>
+
+<AddRecipeFloater />

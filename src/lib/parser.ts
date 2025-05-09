@@ -4,7 +4,16 @@ import {
 	SUB_HEADER_PREFIX,
 	SUB_SUB_HEADER_PREFIX,
 } from "./constants";
-import type { IRecipe } from "./types";
+import { find_recipe_by_url } from "./data";
+import { notify } from "./globals.svelte";
+import { extract_keywords } from "./keywords";
+import {
+	FragmentType,
+	type IIngredient,
+	type IQuantity,
+	type IRecipe,
+	type IShoppingList,
+} from "./types";
 
 export function extract_text(element: HTMLElement) {
 	if (element.nodeName.startsWith("H")) {
@@ -20,7 +29,7 @@ export function extract_text(element: HTMLElement) {
 		}
 	}
 
-	let text = get_text_from_element(element)
+	let text = get_text_from_element(element);
 	return text
 		.replace(/▢/, "")
 		.replaceAll(/(\.)([A-Z])/g, "$1 $2")
@@ -57,7 +66,11 @@ export function extract_data(
 		elements
 			.filter((e) => max_depth(e) > 2)
 			.map((e) => extract_text(e as HTMLElement))
-			.findLastIndex((e) => e.toLowerCase() === "ingredients" || e.toLowerCase() === "gather your ingredients")
+			.findLastIndex(
+				(e) =>
+					e.toLowerCase() === "ingredients" ||
+					e.toLowerCase() === "gather your ingredients"
+			)
 	);
 
 	let seen = new Set();
@@ -190,11 +203,93 @@ function get_title(doc: Document) {
 }
 
 function get_text_from_element(element: any): string {
-	return [...element.childNodes].map((child) => {
-		if (child.childNodes.length) {
-			return get_text_from_element(child);
-		}
-		return child.textContent;
-	}).join(" ").replaceAll(/  +/g, " ");
+	return [...element.childNodes]
+		.map((child) => {
+			if (child.childNodes.length) {
+				return get_text_from_element(child);
+			}
+			return child.textContent;
+		})
+		.join(" ")
+		.replaceAll(/  +/g, " ");
 }
 
+export function get_ingredients(
+	shopping_list: IShoppingList,
+	recipes: IRecipe[]
+): { ingredients: IIngredient[]; errors: string[] } {
+	let mapping: { [key: string]: IQuantity[] } = {};
+	let errors = [];
+	for (let item of shopping_list.items) {
+		// TODO: is this clone necessary?
+		let recipe = structuredClone(
+			find_recipe_by_url(item.recipe_url, recipes)
+		);
+
+		if (recipe) {
+			let keywords = extract_keywords(recipe);
+			for (let row of recipe.ingredients) {
+				let ingredient: string | null = null;
+				let quantity: string | null = null;
+				let error = false;
+				outerloop: for (let text of row.split(/(\*\*[^\*]+\*\*)/)) {
+					if (text.startsWith("**") && text.endsWith("**")) {
+						text = text
+							.replace(/^\*\*/, "")
+							.replace(/\*\*.*/, "")
+							.trim();
+						if (text) {
+							switch (keywords[text]) {
+								case FragmentType.Ingredient:
+									if (ingredient) {
+										error = true;
+										break outerloop;
+									}
+									ingredient = text;
+									break;
+								case FragmentType.Amount:
+									// TODO: handle multiple quantities (imperial, metric) for same ingredient
+									if (quantity) {
+										error = true;
+										break outerloop;
+									}
+									quantity = text;
+									break;
+								default:
+									break;
+							}
+						}
+					}
+				}
+
+				if (error || !ingredient || !quantity) {
+					errors.push(row);
+				} else {
+					let key = ingredient;
+					if (!mapping[key]) {
+						mapping[key] = [];
+					}
+
+					mapping[key].push({
+						recipe_count: item.quantity,
+						ingredient_quantity: quantity,
+					});
+				}
+			}
+		} else {
+			let message = `Missing recipe: ${item.recipe_url}`;
+			console.error(message);
+			notify(message, "red");
+		}
+	}
+
+	let ingredients: IIngredient[] = [];
+	for (let key of Object.keys(mapping)) {
+		ingredients.push({
+			name: key,
+			quantities: mapping[key],
+		});
+	}
+
+	return { ingredients, errors };
+}

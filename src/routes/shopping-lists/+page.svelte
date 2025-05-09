@@ -3,6 +3,7 @@
 	import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
 	import TrashCanIcon from "$lib/icons/trash_can_icon.svelte";
 	import { get_url, go_forward_to } from "$lib/utils";
+	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 
 	let lists = $state(get_shopping_lists());
@@ -55,3 +56,5 @@
 		</div>
 	{/if}
 </main>
+
+<AddRecipeFloater />

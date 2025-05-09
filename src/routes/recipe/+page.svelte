@@ -33,16 +33,19 @@
 	let url = $state<string | null>(null);
 
 	onMount(() => {
-		if (!url) {
-			url = get_query_url();
-		}
+		try_load();
 	});
 
 	afterNavigate(() => {
-		if (!url) {
-			url = get_query_url();
-		}
+		try_load();
 	});
+
+	function try_load() {
+		let new_url = get_query_url();
+		if (new_url !== url) {
+			url = new_url;
+		}
+	}
 
 	const data = writable<IRecipe | null>(null);
 	let current_units = $state(UNITS.ORIGINAL);

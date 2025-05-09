@@ -7,7 +7,7 @@ import {
 	longest,
 } from "./utils";
 
-export function extract_keywords(data: IRecipe) {
+export function extract_keywords(data: IRecipe): Keywords {
 	let keywords: Keywords = {};
 
 	for (let list of [data.ingredients, data.instructions]) {

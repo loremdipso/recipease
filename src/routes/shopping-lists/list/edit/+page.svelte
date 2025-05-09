@@ -11,18 +11,14 @@
 	import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
 	import MinusIcon from "$lib/icons/minus_icon.svelte";
 	import PlusIcon from "$lib/icons/plus_icon.svelte";
-	import type {
-		IIngredient,
-		IRecipe,
-		IShoppingList,
-		IShoppingListItem,
-	} from "$lib/types";
+	import type { IRecipe, IShoppingList, IShoppingListItem } from "$lib/types";
 	import {
 		get_query_param,
 		goto,
 		is_number,
 		set_query_param,
 	} from "$lib/utils";
+	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 	import Overlay from "$lib/views/Overlay.svelte";
 	import RecipePreview from "$lib/views/RecipePreview.svelte";
 	import { onMount } from "svelte";
@@ -147,10 +143,6 @@
 		}
 	}
 
-	function show_preview(recipe: IRecipe) {
-		recipe_to_preview = recipe;
-	}
-
 	function try_clear() {
 		recipe_map = {};
 		name = get_default_list_name();
@@ -199,7 +191,7 @@
 							aria-label="See preview"
 							onclick={(event) => {
 								event.stopPropagation();
-								show_preview(recipe);
+								recipe_to_preview = recipe;
 							}}
 						>
 							<MagnifyingGlass />
@@ -262,6 +254,8 @@
 		{/snippet}
 	</Overlay>
 {/if}
+
+<AddRecipeFloater />
 
 <style lang="scss">
 	.close-button {

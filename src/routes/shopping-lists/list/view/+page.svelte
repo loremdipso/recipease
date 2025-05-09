@@ -1,13 +1,16 @@
 <script lang="ts">
 	import { afterNavigate } from "$app/navigation";
 	import {
+		find_recipe_by_url,
 		get_all_recipes,
 		get_shopping_list,
 		update_shopping_list,
 	} from "$lib/data";
 	import CloseIcon from "$lib/icons/close_icon.svelte";
+	import { get_ingredients } from "$lib/parser";
 	import type { IIngredient, IRecipe, IShoppingList } from "$lib/types";
 	import { get_query_param, is_number } from "$lib/utils";
+	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
 	import Collapsible from "$lib/views/Collapsible.svelte";
 	import Overlay from "$lib/views/Overlay.svelte";
 	import RecipePreview from "$lib/views/RecipePreview.svelte";
@@ -16,7 +19,17 @@
 	let shopping_list = $state<IShoppingList | null>(null);
 
 	let all_recipes = $state(get_all_recipes().reverse());
-	let ingredients = $derived<IIngredient[]>(get_ingredients());
+	let data = $derived<{
+		errors: string[];
+		ingredients: IIngredient[];
+	}>(
+		shopping_list
+			? get_ingredients(
+					$state.snapshot(shopping_list),
+					$state.snapshot(all_recipes)
+				)
+			: { errors: [], ingredients: [] }
+	);
 
 	onMount(() => {
 		try_load();
@@ -44,48 +57,6 @@
 	}
 
 	let recipe_to_preview = $state<IRecipe | null>(null);
-
-	function find_recipe(url: string): IRecipe | null {
-		for (let recipe of all_recipes) {
-			if (recipe.url === url) {
-				return recipe;
-			}
-		}
-		return null;
-	}
-
-	function get_ingredients(): IIngredient[] {
-		if (!shopping_list) {
-			return [];
-		}
-
-		let mapping: { [key: string]: number } = {};
-		for (let item of shopping_list.items) {
-			let recipe = find_recipe(item.recipe_url);
-			if (recipe) {
-				for (let row of recipe.ingredients) {
-					let key = row; // TODO
-					if (mapping[key]) {
-						mapping[key] += item.quantity;
-					} else {
-						mapping[key] = item.quantity;
-					}
-				}
-			} else {
-				// TODO: how to handle missing recipes?
-			}
-		}
-
-		let rv: IIngredient[] = [];
-		for (let key of Object.keys(mapping)) {
-			rv.push({
-				name: key,
-				quantity: mapping[key],
-			});
-		}
-
-		return rv;
-	}
 </script>
 
 <main>
@@ -93,48 +64,63 @@
 		<div class="flex-col gap1">
 			<h1 class="grow">{shopping_list.name}</h1>
 
-			<Collapsible>
-				{#snippet title()}
-					<h2>Recipes</h2>
-				{/snippet}
-
-				{#snippet content()}
-					{#if shopping_list}
-						<div class="list">
-							{#each shopping_list.items as item}
-								<div class="flex-row">
-									<div class="grow">
-										{find_recipe(item.recipe_url)?.title ||
-											"<UNKNOWN>"}
-									</div>
-									<div>
-										{item.quantity}
-									</div>
+			<div class="card">
+				<h2>Recipes</h2>
+				{#if shopping_list}
+					<div class="list flex-col">
+						{#each shopping_list.items as item}
+							<button
+								class="flex-row"
+								onclick={(event) => {
+									event.stopPropagation();
+									let recipe = find_recipe_by_url(
+										item.recipe_url,
+										all_recipes
+									);
+									if (recipe) {
+										recipe_to_preview = recipe;
+									}
+								}}
+							>
+								<div class="grow">
+									{find_recipe_by_url(
+										item.recipe_url,
+										all_recipes
+									)?.title || "<UNKNOWN>"}
 								</div>
-							{/each}
-						</div>
-					{/if}
-					{#if !shopping_list?.items.length}
-						None
-					{/if}
-				{/snippet}
-			</Collapsible>
+								<div>
+									{item.quantity}
+								</div>
+							</button>
+						{/each}
+					</div>
+				{/if}
+				{#if !shopping_list?.items.length}
+					None
+				{/if}
+			</div>
 
 			<div class="card">
-				<div class="flex-row">
-					<h2>Checklist</h2>
+				<div class="flex-row vertically-centered">
+					<h2 class="grow">Checklist</h2>
 					<button
 						class="shrink"
 						onclick={() => {
 							if (shopping_list) {
 								shopping_list.checkedItems = {};
 							}
-						}}>Reset</button
+						}}
 					>
+						Reset
+					</button>
 				</div>
 
 				<div class="list">
-					{#each ingredients as ingredient}
+					{#each data.errors as error}
+						<div class="error">BAD ROW: {error}</div>
+					{/each}
+
+					{#each data.ingredients as ingredient}
 						<label class="selectable">
 							<input
 								type="checkbox"
@@ -150,13 +136,25 @@
 								}}
 							/>
 
-							<span>
-								{ingredient.name}: {ingredient.quantity}
-							</span>
+							<div class="flex-col grow">
+								<h2>
+									{ingredient.name}
+								</h2>
+
+								<div class="flex-row gap0_5 flex-end">
+									{#each ingredient.quantities as quantity}
+										<div class="blue rounded p0_5">
+											{quantity.recipe_count}
+											x
+											{quantity.ingredient_quantity}
+										</div>
+									{/each}
+								</div>
+							</div>
 						</label>
 					{/each}
 
-					{#if !ingredients.length}
+					{#if !data.ingredients.length && !data.errors.length}
 						None
 					{/if}
 				</div>
@@ -191,6 +189,8 @@
 		{/snippet}
 	</Overlay>
 {/if}
+
+<AddRecipeFloater />
 
 <style lang="scss">
 	.close-button {

@@ -411,6 +411,11 @@ input:not([type="checkbox"]) {
 	border-radius: 25px;
 }
 
+.error {
+	color: white !important;
+	background: red !important;
+}
+
 @media print {
 	.no-print,
 	.no-print * {

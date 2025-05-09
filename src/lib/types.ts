@@ -12,7 +12,12 @@ export interface IShoppingListItem {
 
 export interface IIngredient {
 	name: string;
-	quantity: number;
+	quantities: IQuantity[];
+}
+
+export interface IQuantity {
+	recipe_count: number;
+	ingredient_quantity: string;
 }
 
 export interface IRecipe {
