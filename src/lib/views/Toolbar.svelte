@@ -2,7 +2,7 @@
 	import { installPrompt } from "$lib/globals.svelte";
 	import { goto } from "$lib/utils";
 	import type { Snippet } from "svelte";
-	import PreferencesButton from "./PreferencesButton.svelte";
+	// import PreferencesButton from "./PreferencesButton.svelte";
 	import BackArrowIcon from "$lib/icons/back_arrow_icon.svelte";
 
 	let { title, back_path, extra_buttons, title_snippet } = $props<{

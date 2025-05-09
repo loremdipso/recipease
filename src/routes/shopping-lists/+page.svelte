@@ -6,12 +6,19 @@
 	import TrashCanIcon from "$lib/icons/trash_can_icon.svelte";
 	import { get_url, go_forward_to } from "$lib/utils";
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
+	import CurrentListButton from "$lib/views/buttons/CurrentListButton.svelte";
+	import RecipesButton from "$lib/views/buttons/RecipesButton.svelte";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 
 	let lists = $state(get_shopping_lists());
 </script>
 
-<Toolbar title="Shopping lists" back_path="/" />
+<Toolbar title="Shopping lists" back_path="/">
+	{#snippet extra_buttons()}
+		<CurrentListButton />
+		<RecipesButton />
+	{/snippet}
+</Toolbar>
 
 <main class="flex-col gap1">
 	<div class="card">

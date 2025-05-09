@@ -8,7 +8,7 @@
 	onclick={async () => {
 		let url = await get_url_from_clipboard();
 		if (url) {
-			goto(`/recipe`, { query_params: { url } });
+			goto(`/my-recipes/recipe`, { query_params: { url } });
 		}
 	}}
 	title="Copy recipe url from clipboard"

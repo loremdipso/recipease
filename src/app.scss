@@ -26,8 +26,7 @@ body {
 }
 
 main {
-	overflow-y: scroll;
-	margin-top: 1rem;
+	overflow-y: auto;
 	padding-bottom: 5rem;
 }
 
@@ -278,7 +277,7 @@ label {
 }
 
 label > div {
-	overflow-x: scroll;
+	overflow-x: auto;
 }
 
 label.selected {

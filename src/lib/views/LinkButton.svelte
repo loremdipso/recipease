@@ -4,7 +4,7 @@
 	let { url, text, go_back, query_params } = $props<{
 		url: string;
 		text: string;
-		go_back: boolean;
+		go_back?: boolean;
 		query_params?: { [key: string]: any };
 	}>();
 </script>

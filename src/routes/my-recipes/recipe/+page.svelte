@@ -30,9 +30,10 @@
 	import PencilIcon from "$lib/icons/pencil_icon.svelte";
 	import SaveIcon from "$lib/icons/save_icon.svelte";
 	import ReloadIcon from "$lib/icons/reload_icon.svelte";
-	import ShareIcon from "$lib/icons/share_icon.svelte";
 	import TrashCanIcon from "$lib/icons/trash_can_icon.svelte";
-	import LinkButton from "$lib/views/LinkButton.svelte";
+	import HomeButton from "$lib/views/buttons/HomeButton.svelte";
+	import CurrentListButton from "$lib/views/buttons/CurrentListButton.svelte";
+	import ShareButton from "$lib/views/buttons/ShareButton.svelte";
 
 	let url = $state<string | null>(null);
 
@@ -230,19 +231,11 @@
 		</div>
 	{/snippet}
 	{#snippet extra_buttons()}
-		<LinkButton text="Home" go_back={true} url="/" />
-		{#if $last_list_id !== null}
-			<LinkButton
-				text="Current shopping list"
-				go_back={false}
-				url="/shopping-lists/list/view"
-				query_params={{ id: $last_list_id }}
-			/>
-		{/if}
-
-		{#if final_data && navigator.share}
-			<button
-				onclick={async () => {
+		<HomeButton />
+		<CurrentListButton go_back={false} />
+		{#if final_data}
+			<ShareButton
+				onshare={async () => {
 					const url_obj = new URL(window.location.href);
 					url_obj.search = "";
 					if (url) {
@@ -254,13 +247,8 @@
 						url: url_obj.toString(),
 					});
 				}}
-				title="Share"
-				aria-label="Share"
-			>
-				<ShareIcon />
-			</button>
+			/>
 		{/if}
-
 		<button
 			onclick={async () => {
 				if (url) {

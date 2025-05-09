@@ -2,14 +2,10 @@
 	import { afterNavigate } from "$app/navigation";
 	import { page } from "$app/state";
 	import { set_last_list_id } from "$lib/data";
-	import {
-		get_query_param,
-		get_url,
-		go_back_to,
-		goto,
-		is_number,
-	} from "$lib/utils";
-	import LinkButton from "$lib/views/LinkButton.svelte";
+	import { get_query_param, goto, is_number } from "$lib/utils";
+	import HomeButton from "$lib/views/buttons/HomeButton.svelte";
+	import RecipesButton from "$lib/views/buttons/RecipesButton.svelte";
+	import ShoppingListsButton from "$lib/views/buttons/ShoppingListsButton.svelte";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 	import { onMount } from "svelte";
 
@@ -59,13 +55,9 @@
 
 <Toolbar title="Shopping list" back_path="/shopping-lists">
 	{#snippet extra_buttons()}
-		<LinkButton text="Home" go_back={true} url="/" />
-		<LinkButton
-			text="Shopping Lists"
-			go_back={true}
-			url="/shopping-lists"
-		/>
-		<a class="button-like" href={get_url(`/my-recipes`)}>My Recipes</a>
+		<HomeButton />
+		<ShoppingListsButton go_back={true} />
+		<RecipesButton />
 	{/snippet}
 </Toolbar>
 
