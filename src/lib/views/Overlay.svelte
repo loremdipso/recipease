@@ -64,7 +64,7 @@
 		z-index: 10002;
 		max-height: 90vh;
 		max-width: 80vw;
-		overflow: scroll;
+		overflow: auto;
 		position: relative;
 	}
 </style>

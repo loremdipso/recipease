@@ -127,177 +127,176 @@
 	let original_line_to_show = $state<string | null>(null);
 </script>
 
-<main>
-	{#if shopping_list}
-		<div class="flex-col gap1">
-			<h1 class="grow">{shopping_list.name}</h1>
+{#if shopping_list}
+	<div class="flex-col gap1">
+		<h1 class="grow">{shopping_list.name}</h1>
 
-			<Collapsible title="Source recipes" start_collapsed={true}>
-				{#snippet content()}
-					{#if shopping_list}
-						<div class="list flex-col">
-							{#each shopping_list.items as item}
-								<button
-									class="flex-row vertically-centered"
-									onclick={(event) => {
-										event.stopPropagation();
-										show_recipe_from_url(item.recipe_url);
-									}}
+		<Collapsible title="Source recipes" start_collapsed={true}>
+			{#snippet content()}
+				{#if shopping_list}
+					<div class="list flex-col">
+						{#each shopping_list.items as item}
+							<button
+								class="flex-row vertically-centered"
+								onclick={(event) => {
+									event.stopPropagation();
+									show_recipe_from_url(item.recipe_url);
+								}}
+							>
+								<div
+									class="grow flex-row vertically-centered flex-start gap1"
 								>
-									<div
-										class="grow flex-row vertically-centered flex-start gap1"
-									>
-										<MagnifyingGlass />
-										<span>
-											{find_recipe_by_url(
-												item.recipe_url,
-												all_recipes
-											)?.title || "<UNKNOWN>"}
-										</span>
-									</div>
-									<div>
-										{item.quantity}
-									</div>
-								</button>
-							{/each}
-						</div>
-					{/if}
-					{#if !shopping_list?.items.length}
-						None
-					{/if}
-				{/snippet}
-			</Collapsible>
+									<MagnifyingGlass />
+									<span>
+										{find_recipe_by_url(
+											item.recipe_url,
+											all_recipes
+										)?.title || "<UNKNOWN>"}
+									</span>
+								</div>
+								<div>
+									{item.quantity}
+								</div>
+							</button>
+						{/each}
+					</div>
+				{/if}
+				{#if !shopping_list?.items.length}
+					None
+				{/if}
+			{/snippet}
+		</Collapsible>
 
-			<div class="card">
-				<SlideCheck
-					text="Show details"
-					checked={show_details}
-					onchange={(checked) => {
-						show_details = checked;
-					}}
-				/>
+		<div class="card">
+			<SlideCheck
+				text="Show details"
+				checked={show_details}
+				onchange={(checked) => {
+					show_details = checked;
+				}}
+			/>
+		</div>
+
+		<div class="card">
+			<div class="flex-row vertically-centered">
+				<h2 class="grow">Checklist</h2>
+				{#if data.ingredients.length || data.errors.length}
+					<button
+						class="shrink"
+						onclick={() => {
+							if (shopping_list) {
+								shopping_list.checkedItems = {};
+							}
+						}}
+					>
+						Reset
+					</button>
+				{/if}
 			</div>
 
-			<div class="card">
-				<div class="flex-row vertically-centered">
-					<h2 class="grow">Checklist</h2>
-					{#if data.ingredients.length || data.errors.length}
-						<button
-							class="shrink"
-							onclick={() => {
+			<div class="list">
+				{#each data.errors as error}
+					<label class="selectable">
+						<input
+							type="checkbox"
+							checked={shopping_list.checkedItems[error.text]}
+							onchange={(e) => {
 								if (shopping_list) {
-									shopping_list.checkedItems = {};
+									shopping_list.checkedItems[error.text] = (
+										e.target! as any
+									).checked;
 								}
 							}}
-						>
-							Reset
-						</button>
-					{/if}
-				</div>
+						/>
+						<div class="flex-row vertically-centered grow">
+							<span class="grow">
+								{error.text.replaceAll("**", "")}
+							</span>
 
-				<div class="list">
-					{#each data.errors as error}
-						<label class="selectable">
-							<input
-								type="checkbox"
-								checked={shopping_list.checkedItems[error.text]}
-								onchange={(e) => {
-									if (shopping_list) {
-										shopping_list.checkedItems[error.text] =
-											(e.target! as any).checked;
-									}
+							<button
+								class="shrink"
+								onclick={() => {
+									show_recipe_from_url(
+										error.recipe_url,
+										error.text
+									);
 								}}
-							/>
-							<div class="flex-row vertically-centered grow">
-								<span class="grow">
-									{error.text.replaceAll("**", "")}
-								</span>
+							>
+								???
+							</button>
+						</div>
+					</label>
+				{/each}
 
-								<button
-									class="shrink"
-									onclick={() => {
-										show_recipe_from_url(
-											error.recipe_url,
-											error.text
-										);
-									}}
-								>
-									???
-								</button>
-							</div>
-						</label>
-					{/each}
+				{#each data.ingredients as ingredient}
+					<label class="selectable">
+						<input
+							type="checkbox"
+							checked={shopping_list.checkedItems[
+								ingredient.name
+							]}
+							onchange={(e) => {
+								if (shopping_list) {
+									shopping_list.checkedItems[
+										ingredient.name
+									] = (e.target! as any).checked;
+								}
+							}}
+						/>
 
-					{#each data.ingredients as ingredient}
-						<label class="selectable">
-							<input
-								type="checkbox"
-								checked={shopping_list.checkedItems[
-									ingredient.name
-								]}
-								onchange={(e) => {
-									if (shopping_list) {
-										shopping_list.checkedItems[
-											ingredient.name
-										] = (e.target! as any).checked;
-									}
-								}}
-							/>
-
-							<div class="flex-col grow">
-								<div class="flex-row grow">
-									<h2 class="grow">
-										{ingredient.name}
-									</h2>
-									<div>
-										{#if guesstimate(ingredient.quantities) !== "ERROR"}
-											{guesstimate(ingredient.quantities)}
-										{:else}
-											ho
-										{/if}
-									</div>
-								</div>
-
-								<div class="flex-row gap0_5 flex-end">
-									{#if show_details}
-										{#each ingredient.quantities as quantity}
-											<button
-												class="blue rounded p0_5 shrink flex-row vertically-centered gap0_5"
-												onclick={() => {
-													original_line_to_show =
-														quantity.original_line;
-												}}
-												title="See original line"
-												aria-label="See original line"
-											>
-												<MagnifyingGlass />
-												{#if quantity.recipe_count > 1}
-													{quantity.recipe_count}
-													x
-													{quantity.ingredient_quantity}
-												{:else}
-													{quantity.ingredient_quantity}
-												{/if}
-											</button>
-										{/each}
+						<div class="flex-col grow">
+							<div class="flex-row grow">
+								<h2 class="grow">
+									{ingredient.name}
+								</h2>
+								<div>
+									{#if guesstimate(ingredient.quantities) !== "ERROR"}
+										{guesstimate(ingredient.quantities)}
+									{:else}
+										ho
 									{/if}
 								</div>
 							</div>
-						</label>
-					{/each}
 
-					{#if !data.ingredients.length && !data.errors.length}
-						None
-					{/if}
-				</div>
+							<div class="flex-row gap0_5 flex-end">
+								{#if show_details}
+									{#each ingredient.quantities as quantity}
+										<button
+											class="blue rounded p0_5 shrink flex-row vertically-centered gap0_5"
+											onclick={() => {
+												original_line_to_show =
+													quantity.original_line;
+											}}
+											title="See original line"
+											aria-label="See original line"
+										>
+											<MagnifyingGlass />
+											{#if quantity.recipe_count > 1}
+												{quantity.recipe_count}
+												x
+												{quantity.ingredient_quantity}
+											{:else}
+												{quantity.ingredient_quantity}
+											{/if}
+										</button>
+									{/each}
+								{/if}
+							</div>
+						</div>
+					</label>
+				{/each}
+
+				{#if !data.ingredients.length && !data.errors.length}
+					None
+				{/if}
 			</div>
 		</div>
-	{:else}
-		<div class="card">
-			<h1>ERROR: no recipe here :/</h1>
-		</div>
-	{/if}
-</main>
+	</div>
+{:else}
+	<div class="card">
+		<h1>ERROR: no recipe here :/</h1>
+	</div>
+{/if}
 
 {#if recipe_to_preview}
 	<Overlay

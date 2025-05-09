@@ -423,6 +423,10 @@ input:not([type="checkbox"]) {
 	font-weight: bold !important;
 }
 
+.relative {
+	position: relative;
+}
+
 @media print {
 	.no-print,
 	.no-print * {

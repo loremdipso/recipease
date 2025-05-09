@@ -8,6 +8,7 @@
 	import ShoppingListsButton from "$lib/views/buttons/ShoppingListsButton.svelte";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 	import { onMount } from "svelte";
+	import { fade } from "svelte/transition";
 
 	const { children } = $props();
 
@@ -51,6 +52,8 @@
 			}
 		}
 	}
+
+	const duration = 100;
 </script>
 
 <Toolbar title="Shopping list" back_path="/shopping-lists">
@@ -70,7 +73,13 @@
 	{/each}
 </div>
 
-{@render children()}
+<main class="relative">
+	{#key page_id}
+		<div in:fade={{ duration, delay: duration }} out:fade={{ duration }}>
+			{@render children()}
+		</div>
+	{/key}
+</main>
 
 {#snippet fancy_button(text: string, url: string, index: number)}
 	<button

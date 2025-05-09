@@ -21,7 +21,7 @@
 </Toolbar>
 
 <main class="flex-col gap1">
-	<div class="card">
+	<div class="card mt1">
 		<button
 			class="green full-width p0_5 center rounded"
 			onclick={() => {
@@ -33,7 +33,7 @@
 	</div>
 
 	{#if lists.length}
-		<div class="list">
+		<div class="list card">
 			{#each lists as list}
 				<div
 					class="flex-row vertically-centered gap1"

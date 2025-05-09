@@ -147,91 +147,85 @@
 	}
 </script>
 
-<main>
-	<div class="card">
-		<div class="flex-col gap1">
-			<label class="flex-row gap1">
-				<b>Name:</b>
-				<input class="grow pl1" bind:value={name} />
-			</label>
+<div class="card">
+	<div class="flex-col gap1">
+		<label class="flex-row gap1">
+			<b>Name:</b>
+			<input class="grow pl1" bind:value={name} />
+		</label>
 
-			<label class="flex-row gap1">
-				<b> Filter: </b>
-				<input class="grow" bind:value={search_value} />
-			</label>
+		<label class="flex-row gap1">
+			<b> Filter: </b>
+			<input class="grow" bind:value={search_value} />
+		</label>
 
-			<div class="flex-row gap1">
-				<button onclick={try_clear} class="blue rounded">
-					Reset
-				</button>
+		<div class="flex-row gap1">
+			<button onclick={try_clear} class="blue rounded"> Reset </button>
 
-				<button
-					class="red rounded"
-					onclick={() => {
-						delete_shopping_list(shopping_list.id);
-						goto("/shopping-lists");
-					}}
+			<button
+				class="red rounded"
+				onclick={() => {
+					delete_shopping_list(shopping_list.id);
+					goto("/shopping-lists");
+				}}
+			>
+				Delete list
+			</button>
+
+			<h3 class="vertically-centered black rounded p0_5">Autosaved :)</h3>
+		</div>
+
+		<div class="list">
+			{#each recipes as recipe}
+				<div
+					class="flex-row"
+					class:selected={(recipe_map[recipe.url] || 0) > 0}
 				>
-					Delete list
-				</button>
-
-				<h3 class="vertically-centered black rounded p0_5">
-					Autosaved :)
-				</h3>
-			</div>
-
-			<div class="list">
-				{#each recipes as recipe}
-					<div
-						class="flex-row"
-						class:selected={(recipe_map[recipe.url] || 0) > 0}
+					<button
+						class="grow vertically-centered gap1 white-text"
+						title="See preview"
+						aria-label="See preview"
+						onclick={(event) => {
+							event.stopPropagation();
+							recipe_to_preview = recipe;
+						}}
 					>
+						<MagnifyingGlass />
+						<h2>
+							{recipe.title || "<missing title>"}
+						</h2>
+					</button>
+
+					<div class="shrink vertically-centered">
 						<button
-							class="grow vertically-centered gap1 white-text"
-							title="See preview"
-							aria-label="See preview"
+							title="Add to list"
+							aria-label="Add to list"
 							onclick={(event) => {
 								event.stopPropagation();
-								recipe_to_preview = recipe;
+								subtract_from_map(recipe);
 							}}
 						>
-							<MagnifyingGlass />
-							<h2>
-								{recipe.title || "<missing title>"}
-							</h2>
+							<MinusIcon />
 						</button>
-
-						<div class="shrink vertically-centered">
-							<button
-								title="Add to list"
-								aria-label="Add to list"
-								onclick={(event) => {
-									event.stopPropagation();
-									subtract_from_map(recipe);
-								}}
-							>
-								<MinusIcon />
-							</button>
-							<b title="Count" aria-label="Count">
-								{recipe_map[recipe.url] || 0}
-							</b>
-							<button
-								title="Add to list"
-								aria-label="Add to list"
-								onclick={(event) => {
-									event.stopPropagation();
-									add_to_map(recipe);
-								}}
-							>
-								<PlusIcon />
-							</button>
-						</div>
+						<b title="Count" aria-label="Count">
+							{recipe_map[recipe.url] || 0}
+						</b>
+						<button
+							title="Add to list"
+							aria-label="Add to list"
+							onclick={(event) => {
+								event.stopPropagation();
+								add_to_map(recipe);
+							}}
+						>
+							<PlusIcon />
+						</button>
 					</div>
-				{/each}
-			</div>
+				</div>
+			{/each}
 		</div>
 	</div>
-</main>
+</div>
 
 {#if recipe_to_preview}
 	<Overlay

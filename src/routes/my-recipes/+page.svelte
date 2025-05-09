@@ -25,7 +25,7 @@
 </Toolbar>
 
 <main>
-	<div class="list">
+	<div class="list card mt1">
 		{#each recipes as recipe}
 			<div
 				class="flex-row"
