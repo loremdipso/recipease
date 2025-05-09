@@ -305,5 +305,10 @@ export function get_ingredients(
 		});
 	}
 
+	// Sort
+	ingredients.sort((a, b) => {
+		return a.name.localeCompare(b.name);
+	});
+
 	return { ingredients, errors };
 }
