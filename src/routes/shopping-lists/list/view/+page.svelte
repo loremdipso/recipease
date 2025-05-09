@@ -7,10 +7,12 @@
 		update_shopping_list,
 	} from "$lib/data";
 	import CloseIcon from "$lib/icons/close_icon.svelte";
+	import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
 	import { get_ingredients } from "$lib/parser";
 	import type { IIngredient, IRecipe, IShoppingList } from "$lib/types";
 	import { get_query_param, is_number } from "$lib/utils";
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
+	import Collapsible from "$lib/views/Collapsible.svelte";
 	import Overlay from "$lib/views/Overlay.svelte";
 	import RecipePreview from "$lib/views/RecipePreview.svelte";
 	import { onMount } from "svelte";
@@ -63,41 +65,47 @@
 		<div class="flex-col gap1">
 			<h1 class="grow">{shopping_list.name}</h1>
 
-			<div class="card">
-				<h2>Recipes</h2>
-				{#if shopping_list}
-					<div class="list flex-col">
-						{#each shopping_list.items as item}
-							<button
-								class="flex-row"
-								onclick={(event) => {
-									event.stopPropagation();
-									let recipe = find_recipe_by_url(
-										item.recipe_url,
-										all_recipes
-									);
-									if (recipe) {
-										recipe_to_preview = recipe;
-									}
-								}}
-							>
-								<div class="grow">
-									{find_recipe_by_url(
-										item.recipe_url,
-										all_recipes
-									)?.title || "<UNKNOWN>"}
-								</div>
-								<div>
-									{item.quantity}
-								</div>
-							</button>
-						{/each}
-					</div>
-				{/if}
-				{#if !shopping_list?.items.length}
-					None
-				{/if}
-			</div>
+			<Collapsible title="Source recipes" start_collapsed={true}>
+				{#snippet content()}
+					{#if shopping_list}
+						<div class="list flex-col">
+							{#each shopping_list.items as item}
+								<button
+									class="flex-row vertically-centered"
+									onclick={(event) => {
+										event.stopPropagation();
+										let recipe = find_recipe_by_url(
+											item.recipe_url,
+											all_recipes
+										);
+										if (recipe) {
+											recipe_to_preview = recipe;
+										}
+									}}
+								>
+									<div
+										class="grow flex-row vertically-centered flex-start gap1"
+									>
+										<MagnifyingGlass />
+										<span>
+											{find_recipe_by_url(
+												item.recipe_url,
+												all_recipes
+											)?.title || "<UNKNOWN>"}
+										</span>
+									</div>
+									<div>
+										{item.quantity}
+									</div>
+								</button>
+							{/each}
+						</div>
+					{/if}
+					{#if !shopping_list?.items.length}
+						None
+					{/if}
+				{/snippet}
+			</Collapsible>
 
 			<div class="card">
 				<div class="flex-row vertically-centered">
