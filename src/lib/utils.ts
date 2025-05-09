@@ -113,6 +113,11 @@ export function valid_url(url: string | null): boolean {
 	}
 }
 
+export function get_query_param(param_name: string): string | null {
+	let url_obj = new URL((document as any).location);
+	return url_obj.searchParams.get(param_name);
+}
+
 export function get_query_url(): string | null {
 	// TODO: what do about this?
 	// decodeURIComponent(url.searchParams.get("name") || "")

@@ -14,6 +14,7 @@ import {
 	FragmentType as FragmentType,
 	type IRecipe,
 	type ISection,
+	type IShoppingList,
 	type Keywords,
 } from "./types";
 import {
@@ -25,18 +26,15 @@ import {
 
 export function get_all_recipes(): IRecipe[] {
 	try {
-		let data = JSON.parse(localStorage.getItem(KEYS.RECIPES) || "[]");
-		if (data.length === 0) {
-			// TODO: remove this later
-			data = JSON.parse(localStorage.getItem(KEYS.TABS) || "[]").map(
-				(e: any) => ({ ...e.data, url: e.url })
-			);
+		let value = localStorage.getItem(KEYS.RECIPES);
+		if (value) {
+			return JSON.parse(value);
 		}
-		return data;
 	} catch (e) {
 		console.error(e);
-		return [];
 	}
+
+	return [];
 }
 
 export function save_recipes(recipes: IRecipe[]) {
@@ -82,11 +80,6 @@ export function delete_recipe(
 	save = true
 ): IRecipe[] {
 	recipes = recipes.filter((e) => e.url !== url);
-
-	// TODO: this
-	// if (current_url === url) {
-	// 	current_url = "";
-	// }
 
 	if (save) {
 		save_recipes(recipes);
@@ -272,4 +265,86 @@ export function get_sections(
 	}
 
 	return sections;
+}
+
+export function get_temp_list(): IShoppingList | null {
+	try {
+		let value = localStorage.getItem(KEYS.SHOPPING_LIST_IN_PROGRESS);
+		if (value) {
+			return JSON.parse(value);
+		}
+	} catch (e) {
+		console.error(e);
+	}
+
+	return null;
+}
+
+export function save_temp_list(list: IShoppingList) {
+	localStorage.setItem(KEYS.SHOPPING_LIST_IN_PROGRESS, JSON.stringify(list));
+}
+
+export function delete_temp_list(list: IShoppingList) {
+	localStorage.removeItem(KEYS.SHOPPING_LIST_IN_PROGRESS);
+}
+
+export function get_shopping_list(id: number): IShoppingList | null {
+	let lists = get_shopping_lists();
+	for (let list of lists) {
+		if (list.id === id) {
+			return list;
+		}
+	}
+	return null;
+}
+
+export function get_shopping_lists(): IShoppingList[] {
+	try {
+		let value = localStorage.getItem(KEYS.SHOPPING_LISTS);
+		if (value) {
+			return JSON.parse(value);
+		}
+	} catch (e) {
+		console.error(e);
+	}
+
+	return [];
+}
+
+// Returns the id of the new list
+export function add_shopping_list(list: IShoppingList): number {
+	let lists = get_shopping_lists();
+	let largest = 0;
+	for (let list of lists) {
+		if (list.id > largest) {
+			largest = list.id;
+		}
+	}
+
+	let new_id = largest + 1;
+	list.id = new_id;
+	lists.push(list);
+	save_shopping_lists(lists);
+
+	return new_id;
+}
+
+export function save_shopping_lists(lists: IShoppingList[]) {
+	localStorage.setItem(KEYS.SHOPPING_LISTS, JSON.stringify(lists));
+}
+
+export function delete_shopping_list(
+	id_to_delete: number,
+	lists?: IShoppingList[],
+	save = true
+): IShoppingList[] {
+	if (!lists) {
+		lists = get_shopping_lists();
+	}
+
+	lists = lists.filter((e) => e.id !== id_to_delete);
+	if (save) {
+		save_shopping_lists(lists);
+	}
+	return lists;
 }

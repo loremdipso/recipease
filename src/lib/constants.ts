@@ -1,9 +1,13 @@
 import { fix_regex } from "./utils";
 
+const prefix = "recipease_";
+
 export enum KEYS {
-	PREFERENCES = "preferences",
+	PREFERENCES = `${prefix}preferences`,
 	RECIPES = "recipes",
-	TABS = "tabs", // deprecated
+
+	SHOPPING_LISTS = `${prefix}shopping_lists`,
+	SHOPPING_LIST_IN_PROGRESS = `${prefix}shopping_list_in_progress`,
 }
 
 export enum UNITS {

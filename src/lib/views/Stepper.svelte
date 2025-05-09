@@ -81,7 +81,7 @@
 
 <style lang="scss">
 	.step-contents {
-		max-height: 60vh;
+		height: 60vh;
 		overflow-y: scroll;
 	}
 </style>

@@ -1,5 +1,11 @@
+export interface IShoppingList {
+	id: number;
+	name: string;
+	items: IShoppingListItem[];
+}
+
 export interface IShoppingListItem {
-	recipe: IRecipe;
+	recipe_url: string;
 	quantity: number;
 }
 

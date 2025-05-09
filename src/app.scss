@@ -403,6 +403,10 @@ input:not([type="checkbox"]) {
 	background: #006786 !important;
 }
 
+.rounded {
+	border-radius: 25px;
+}
+
 @media print {
 	.no-print,
 	.no-print * {

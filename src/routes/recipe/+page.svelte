@@ -32,8 +32,16 @@
 
 	let url = $state<string | null>(null);
 
+	onMount(() => {
+		if (!url) {
+			url = get_query_url();
+		}
+	});
+
 	afterNavigate(() => {
-		url = get_query_url();
+		if (!url) {
+			url = get_query_url();
+		}
 	});
 
 	const data = writable<IRecipe | null>(null);
@@ -164,9 +172,9 @@
 				}}
 			>
 				{#if title_to_edit}
-					<PencilIcon />
-				{:else}
 					<SaveIcon />
+				{:else}
+					<PencilIcon />
 				{/if}
 			</button>
 		</div>
