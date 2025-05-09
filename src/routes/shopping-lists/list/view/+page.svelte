@@ -11,7 +11,6 @@
 	import type { IIngredient, IRecipe, IShoppingList } from "$lib/types";
 	import { get_query_param, is_number } from "$lib/utils";
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
-	import Collapsible from "$lib/views/Collapsible.svelte";
 	import Overlay from "$lib/views/Overlay.svelte";
 	import RecipePreview from "$lib/views/RecipePreview.svelte";
 	import { onMount } from "svelte";
@@ -103,16 +102,18 @@
 			<div class="card">
 				<div class="flex-row vertically-centered">
 					<h2 class="grow">Checklist</h2>
-					<button
-						class="shrink"
-						onclick={() => {
-							if (shopping_list) {
-								shopping_list.checkedItems = {};
-							}
-						}}
-					>
-						Reset
-					</button>
+					{#if data.ingredients.length || data.errors.length}
+						<button
+							class="shrink"
+							onclick={() => {
+								if (shopping_list) {
+									shopping_list.checkedItems = {};
+								}
+							}}
+						>
+							Reset
+						</button>
+					{/if}
 				</div>
 
 				<div class="list">

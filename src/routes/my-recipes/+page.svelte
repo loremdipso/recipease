@@ -27,7 +27,7 @@
 			>
 				<a
 					class="grow vertically-centered p0_5"
-					href={get_url(`/recipe`, { url: recipe.url })}
+					href={get_url(`/my-recipes/recipe`, { url: recipe.url })}
 				>
 					{recipe.title || "<missing title>"}
 				</a>

@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
+import { get_last_list_id } from "./data";
 
 let ID = 0;
 export interface INotification {
@@ -28,6 +29,8 @@ export function remove_notification(notification: INotification) {
 		return new_notifications;
 	});
 }
+
+export const last_list_id = writable<number | null>(get_last_list_id());
 
 export const installPrompt = writable<any>(null);
 window.addEventListener("beforeinstallprompt", (event) => {

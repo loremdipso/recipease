@@ -6,6 +6,7 @@ export enum KEYS {
 	PREFERENCES = `${prefix}preferences`,
 	RECIPES = "recipes",
 	SHOPPING_LISTS = `${prefix}shopping_lists`,
+	LAST_LIST_ID = `${prefix}last_list_id`,
 }
 
 export enum UNITS {

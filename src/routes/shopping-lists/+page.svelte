@@ -1,6 +1,7 @@
 <script>
 	import { delete_shopping_list, get_shopping_lists } from "$lib/data";
 	import MagnifyingGlass from "$lib/icons/magnifying_glass.svelte";
+	import PencilIcon from "$lib/icons/pencil_icon.svelte";
 	import TrashCanIcon from "$lib/icons/trash_can_icon.svelte";
 	import { get_url, go_forward_to } from "$lib/utils";
 	import AddRecipeFloater from "$lib/views/AddRecipeFloater.svelte";
@@ -26,25 +27,30 @@
 	{#if lists.length}
 		<div class="list">
 			{#each lists as list}
-				<div class="flex-row">
+				<div class="flex-row vertically-centered gap1">
 					<a
-						class="grow"
-						href={get_url(
-							`/shopping-lists/list/edit?id=${list.id}`
-						)}
-					>
-						{list.name}
-					</a>
-					<a
-						class="vertically-centered"
+						class="grow flex-row vertically-centered"
 						href={get_url(
 							`/shopping-lists/list/view?id=${list.id}`
 						)}
 					>
-						<MagnifyingGlass />
+						<span class="grow">
+							{list.name}
+						</span>
+						<span class="p1">
+							<MagnifyingGlass />
+						</span>
+					</a>
+					<a
+						class="p1"
+						href={get_url(
+							`/shopping-lists/list/edit?id=${list.id}`
+						)}
+					>
+						<PencilIcon />
 					</a>
 					<button
-						class="shrink"
+						class="shrink p1"
 						onclick={() => {
 							lists = delete_shopping_list(list.id);
 						}}

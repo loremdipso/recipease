@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { afterNavigate } from "$app/navigation";
 	import {
 		add_shopping_list,
 		delete_shopping_list,
@@ -51,9 +50,9 @@
 		try_load();
 	});
 
-	afterNavigate(() => {
-		try_load();
-	});
+	// afterNavigate(() => {
+	// 	try_load();
+	// });
 
 	function try_load() {
 		if (id !== -1) {
@@ -64,22 +63,21 @@
 		let maybe_id = get_query_param("id");
 		if (maybe_id !== null && is_number(maybe_id)) {
 			temp_list = get_shopping_list(Number(maybe_id));
-		}
-
-		if (temp_list) {
-			recipe_map = {};
-			id = temp_list.id;
-			name = temp_list.name;
-			for (let item of temp_list.items) {
-				if (recipe_map[item.recipe_url]) {
-					recipe_map[item.recipe_url] += item.quantity;
-				} else {
-					recipe_map[item.recipe_url] = item.quantity;
+			if (temp_list) {
+				recipe_map = {};
+				id = temp_list.id;
+				name = temp_list.name;
+				for (let item of temp_list.items) {
+					if (recipe_map[item.recipe_url]) {
+						recipe_map[item.recipe_url] += item.quantity;
+					} else {
+						recipe_map[item.recipe_url] = item.quantity;
+					}
 				}
+			} else {
+				id = add_shopping_list($state.snapshot(shopping_list));
+				set_query_param("id", id.toString());
 			}
-		} else {
-			id = add_shopping_list($state.snapshot(shopping_list));
-			set_query_param("id", id.toString());
 		}
 	}
 
@@ -184,7 +182,10 @@
 
 			<div class="list">
 				{#each recipes as recipe}
-					<div class="flex-row">
+					<div
+						class="flex-row"
+						class:selected={(recipe_map[recipe.url] || 0) > 0}
+					>
 						<button
 							class="grow vertically-centered gap1 white-text"
 							title="See preview"

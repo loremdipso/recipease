@@ -6,7 +6,7 @@ import {
 	UNITS,
 } from "./constants";
 import { try_convert_and_resize } from "./converters";
-import { notify } from "./globals.svelte";
+import { last_list_id, notify } from "./globals.svelte";
 import { extract_keywords } from "./keywords";
 import { extract_data } from "./parser";
 import { split_text } from "./renderers";
@@ -343,4 +343,20 @@ export function delete_shopping_list(
 		save_shopping_lists(lists);
 	}
 	return lists;
+}
+
+export function set_last_list_id(list_id: number | null) {
+	localStorage.setItem(KEYS.LAST_LIST_ID, JSON.stringify(list_id));
+	last_list_id.set(list_id);
+}
+
+export function get_last_list_id(): number | null {
+	try {
+		let value = localStorage.getItem(KEYS.LAST_LIST_ID);
+		if (value) {
+			return JSON.parse(value);
+		}
+	} catch (e) {}
+
+	return null;
 }

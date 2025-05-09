@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { afterNavigate } from "$app/navigation";
 	import { page } from "$app/state";
-	import { get_query_param, goto, is_number } from "$lib/utils";
+	import { set_last_list_id } from "$lib/data";
+	import {
+		get_query_param,
+		get_url,
+		go_back_to,
+		goto,
+		is_number,
+	} from "$lib/utils";
 	import Toolbar from "$lib/views/Toolbar.svelte";
 	import { onMount } from "svelte";
 
@@ -43,12 +50,27 @@
 			let maybe_id = get_query_param("id");
 			if (maybe_id !== null && is_number(maybe_id)) {
 				list_id = Number(maybe_id);
+				set_last_list_id(list_id);
 			}
 		}
 	}
 </script>
 
-<Toolbar title="Shopping list" back_path="/shopping-lists" />
+<Toolbar title="Shopping list" back_path="/shopping-lists">
+	{#snippet extra_buttons()}
+		<a class="button-like" href={get_url(`/`)}> Home</a>
+		<a
+			class="button-like"
+			href={get_url(`/shopping-lists`)}
+			onclick={() => {
+				go_back_to("/shopping-lists");
+			}}
+		>
+			Shopping Lists
+		</a>
+		<a class="button-like" href={get_url(`/my-recipes`)}>My Recipes</a>
+	{/snippet}
+</Toolbar>
 
 <div class="flex-row vertically-centered p1">
 	{#each links as link, i}
