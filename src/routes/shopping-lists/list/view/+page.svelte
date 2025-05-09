@@ -114,11 +114,24 @@
 							{/each}
 						</div>
 					{/if}
+					{#if !shopping_list?.items.length}
+						None
+					{/if}
 				{/snippet}
 			</Collapsible>
 
 			<div class="card">
-				<h2>Combined ingredients</h2>
+				<div class="flex-row">
+					<h2>Checklist</h2>
+					<button
+						class="shrink"
+						onclick={() => {
+							if (shopping_list) {
+								shopping_list.checkedItems = {};
+							}
+						}}>Reset</button
+					>
+				</div>
 
 				<div class="list">
 					{#each ingredients as ingredient}
@@ -142,6 +155,10 @@
 							</span>
 						</label>
 					{/each}
+
+					{#if !ingredients.length}
+						None
+					{/if}
 				</div>
 			</div>
 		</div>
