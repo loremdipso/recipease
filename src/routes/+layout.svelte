@@ -5,28 +5,27 @@
 	import "../app.scss";
 	import Footer from "$lib/views/Footer.svelte";
 	import type { IPageData } from "$lib/types";
-	import { previous_page_id } from "$lib/globals.svelte";
-	import { beforeNavigate } from "$app/navigation";
+	import { onNavigate } from "$app/navigation";
 
 	const { children } = $props();
-	const page_id = $derived(page.route.id);
-	const custom_duration = $derived(
-		(page.state as IPageData)?.custom_duration
+	let previous_page_id = $state<string | null | undefined>("");
+	const skip_page_animation = $derived(
+		Boolean((page.state as IPageData)?.skip_page_animation)
+	);
+	let effective_page_id = $derived(
+		skip_page_animation ? previous_page_id : page.route.id
 	);
 	const going_back = $derived(
 		Boolean((page.state as IPageData)?.is_going_back)
 	);
-	const duration = $derived(
-		custom_duration !== undefined ? Number(custom_duration) : 500
-	);
+	const duration = $derived(skip_page_animation ? 0 : 500);
 
-	// Hack to get around sveltekit rerendering junk unnecessarily.
-	beforeNavigate((event) => {
-		previous_page_id.set(event.from?.route.id || null);
+	onNavigate((event) => {
+		previous_page_id = event.from?.route.id;
 	});
 </script>
 
-{#key page_id}
+{#key effective_page_id}
 	<div
 		in:fly={{ x: going_back ? "-100%" : "100%", duration }}
 		out:fly={{ x: going_back ? "100%" : "-100%", duration }}
