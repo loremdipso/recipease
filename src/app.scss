@@ -376,7 +376,11 @@ hr {
 .card {
 	background-color: #292929;
 	border-radius: 10px;
-	padding: 1rem;
+	padding: 1rem 0;
+	> :not(.full-width):not(.list) {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
 }
 
 .pl1 {

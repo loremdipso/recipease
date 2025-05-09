@@ -134,7 +134,7 @@
 		<Collapsible title="Source recipes" start_collapsed={true}>
 			{#snippet content()}
 				{#if shopping_list}
-					<div class="list flex-col">
+					<div class="list">
 						{#each shopping_list.items as item}
 							<button
 								class="flex-row vertically-centered"
