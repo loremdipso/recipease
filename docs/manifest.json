@@ -1,0 +1,31 @@
+{
+	"short_name": "RecipEase",
+	"name": "RecipEase",
+	"description": "Make recipes Easy again",
+	"icons": [
+		{
+			"src": "favicon-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "favicon-512x512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		}
+	],
+	"display": "standalone",
+	"theme_color": "black",
+	"background_color": "#e9afaf",
+	"start_url": "/recipease",
+	"share_target": {
+		"action": "https://loremdipso.com/recipease/my-recipes/recipe",
+		"method": "GET",
+		"enctype": "application/x-www-form-urlencoded",
+		"params": {
+			"title": "name",
+			"text": "description",
+			"url": "link"
+		}
+	}
+}
