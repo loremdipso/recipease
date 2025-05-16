@@ -1,3 +1,0 @@
-import{t as r,a as s}from"../chunks/CfNwE0Bq.js";import"../chunks/Bv02EmYY.js";import{f as i,G as n}from"../chunks/awlFoezV.js";import{H as p}from"../chunks/D1ci96FA.js";import{T as m}from"../chunks/CEKHoqvU.js";var l=r(`<!> <main><div class="card flex-col gap1 mt1"><p>This is still a work in progress. If you found this website at all,
-			well, kudos. I guarantee nothing, I promise nothing, use at your own
-			risk.</p> <p>p.s. please don't sue me</p></div></main>`,1);function h(o){var t=l(),a=i(t);m(a,{title:"Terms of Service",back_path:"/",extra_buttons:e=>{p(e)},$$slots:{extra_buttons:!0}}),n(2),s(o,t)}export{h as component};
