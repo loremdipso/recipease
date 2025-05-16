@@ -1,4 +1,4 @@
-import{t as s,a as i}from"../chunks/CfNwE0Bq.js";import"../chunks/Bv02EmYY.js";import{f as r,G as n}from"../chunks/awlFoezV.js";import{H as l}from"../chunks/D9R3ZNQR.js";import{T as u}from"../chunks/sWn9jGsE.js";var y=s(`<!> <main><div class="card flex-col gap1 mt1"><p>I don't collect any of your data. Not even Google Analytics. And
+import{t as s,a as i}from"../chunks/CfNwE0Bq.js";import"../chunks/Bv02EmYY.js";import{f as r,G as n}from"../chunks/awlFoezV.js";import{H as l}from"../chunks/BQ9q5cbR.js";import{T as u}from"../chunks/D4Qv72GV.js";var y=s(`<!> <main><div class="card flex-col gap1 mt1"><p>I don't collect any of your data. Not even Google Analytics. And
 			that's not just because I think your data is boring and I don't want
 			to, but also you can't make me.</p> <p>That said, I <i>may</i> be piggybacking off the free tier of some
 			service I know very little about (<a href="https://corsproxy.io/">https://corsproxy.io/</a> at the moment). They very well might collect your data, frankly I couldn't
