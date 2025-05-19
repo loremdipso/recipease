@@ -1,0 +1,1 @@
+import{l as c,n as i,m as _,o as h,q as r,v as y,w as d,x as k,y as l,U as u}from"./CaVnAIw_.js";function I(n,f,o){r&&y();var e=n,s=u,a,t=c()?i:_;h(()=>{t(s,s=f())&&(a&&d(a),a=k(()=>o(e)))}),r&&(e=l)}export{I as k};
