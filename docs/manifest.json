@@ -1,7 +1,6 @@
 {
 	"short_name": "Recipleasy",
 	"name": "Recipleasy",
-	"scope": "/recipease/",
 	"description": "Make recipes Easy again",
 	"icons": [
 		{
