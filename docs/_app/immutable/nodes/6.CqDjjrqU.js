@@ -1,4 +1,4 @@
-import{t as e,a as i}from"../chunks/SB0OVNle.js";import"../chunks/lJugi39j.js";import{f as n,G as r}from"../chunks/DSkh8qEa.js";import{H as l}from"../chunks/BKsazPUm.js";import{T as u}from"../chunks/BQ79WqDB.js";var m=e(`<!> <main><div class="card flex-col gap1 mt1"><p>I don't collect any of your data. Not even Google Analytics. And
+import{t as e,a as i}from"../chunks/SB0OVNle.js";import"../chunks/lJugi39j.js";import{f as n,G as r}from"../chunks/DSkh8qEa.js";import{H as l}from"../chunks/B-FAJAmI.js";import{T as u}from"../chunks/DkBCK2Fe.js";var m=e(`<!> <main><div class="card flex-col gap1 mt1"><p>I don't collect any of your data. Not even Google Analytics. And
 			that's not just because I think your data is boring and I don't want
 			to, but also you can't make me.</p> <p>Just... try not to pass any sensitive urls through this site, okay?
 			Generally sites are pretty good about security nowadays, so even if
