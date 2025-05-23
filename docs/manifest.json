@@ -17,7 +17,8 @@
 	"display": "standalone",
 	"theme_color": "black",
 	"background_color": "#e9afaf",
-	"start_url": "/recipease",
+	"start_url": "/recipease/",
+	"scope": "/recipease/",
 	"share_target": {
 		"action": "https://loremdipso.com/recipease/my-recipes/recipe",
 		"method": "GET",
