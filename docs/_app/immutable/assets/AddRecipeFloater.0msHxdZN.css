@@ -1,0 +1,1 @@
+.spinner.svelte-142adec{width:var(--size);height:var(--size);border:var(--width) solid rgba(0,0,0,.1);border-top:var(--width) solid var(--color);border-radius:50%;animation:svelte-142adec-spin var(--speed) linear infinite;display:inline-block}@keyframes svelte-142adec-spin{0%{transform:rotate(0)}to{transform:rotate(360deg)}}
